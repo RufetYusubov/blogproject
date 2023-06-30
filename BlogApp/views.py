@@ -12,7 +12,7 @@ class HomeView(View):
             'categories' : categories
         }
 
-        return render(request,"home.html",context)
+        return render(request,"index.html",context)
 
 class CategoryView(View):
     def get(self,request,id,*args,**kwargs):
