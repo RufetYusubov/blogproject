@@ -25,6 +25,23 @@ class BlogModel(models.Model):
 
     def __str__(self) -> str:
         return self.name
+    
+class CommentModel(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="user_comments")
+    blog = models.ForeignKey(BlogModel,on_delete=models.CASCADE,related_name="blog_comments")
+    parent = models.ForeignKey("self", on_delete=models.CASCADE,related_name="replies")
+    comment = models.TextField()
+    pub_date = models.DateField(auto_now_add = True)
+
+
+    class Meta:
+        verbose_name = "Comment"
+        ordering = ("id",)
+
+    def __str__(self):
+        return self.user.username + " " + str(self.id)
+    
+    
 
 
 

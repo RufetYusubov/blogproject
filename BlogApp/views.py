@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from BlogApp.models import BlogModel,CategoryModel,TagCloudModel
+from django.shortcuts import render,redirect
+from BlogApp.models import BlogModel,CategoryModel,TagCloudModel,CommentModel
 from django.views.generic import View
 
 class HomeView(View):
@@ -13,6 +13,7 @@ class HomeView(View):
         }
 
         return render(request,"index.html",context)
+#-----------------------------------------------------------------------------------------
 
 class CategoryView(View):
     def get(self,request,id,*args,**kwargs):
@@ -25,6 +26,47 @@ class CategoryView(View):
         }
 
         return render(request,"categories.html",context)
+#--------------------------------------------------------------------------------------------------
+class PostDetailView(View):
+    def get(self,request,id,*args,**kwargs):
+        blog = BlogModel.objects.get(id=id)
+        context = {
+            "blog" : blog
+        }
 
+        return render(request,'post-details.html',context)
+    
+    def post(self,request,id,*args,**kwargs):
+        choice = request.POST.get("choice")
+        if choice == "comment":
+            comment = request.POST.get("comment")
+            blog_id = request.POST.get("blog_id")
+
+            blog = BlogModel.objects.get(id=blog_id)
+
+            CommentModel.objects.create(
+                user = request.user,
+                blog = blog,
+                comment = comment,
+                
+            )
+
+        elif choice == "reply":
+            reply = request.POST.get("reply")
+
+            blog_id = request.POST.get("blog_id")
+            blog = BlogModel.objects.get(id=blog_id)
+
+            comment_id = request.POST.get("comment_id")
+            comment = CommentModel.objects.get(id=comment_id)
+
+            CommentModel.objects.create(
+                user = request.user,
+                blog = blog,
+                comment = reply,
+                parent = comment
+            )
+
+            return redirect("post-details",id=id)
 
 

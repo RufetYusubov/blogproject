@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from account.models import AccountModel
+from account.models import AccountModel,ContactModel
 from BlogApp.models import CategoryModel
 from django.contrib.auth.models import User
 from django.views.generic import View
@@ -27,13 +27,8 @@ def check_validation(newpassword2):
 
 class SignupView(View):
     def get(self,request,*args,**kwargs):
-        categories = CategoryModel.objects.all()
 
-        context = {
-            "categories" : categories
-        }
-
-        return render(request,"signup.html",context)
+        return render(request,"signup.html")
     
     def post(self,request,*args,**kwargs):
         username = request.POST.get("username")
@@ -65,12 +60,7 @@ class SignupView(View):
 #-----------------------------------------------------------------------------------------------------
 class LoginView(View):
     def get(self,request,*args,**kwargs):
-        categories = CategoryModel.objects.all()
-
-        context = {
-            "categories" : categories
-        }
-        return render(request,"login.html",context)
+        return render(request,"login.html")
     
     def post(self,request,*args,**kwargs):
         username = request.POST.get("username")
@@ -94,11 +84,7 @@ def logoutUser(request):
 #------------------------------------------------------------------------------------------
 class ChangepasswordView(View):
     def get(self,request,*args,**kwargs):
-        categories = CategoryModel.objects.all()
-        context = {
-            "categories" : categories
-        }
-        return render(request,'changepassword.html', context)
+        return render(request,'changepassword.html')
     
     def post(self,request,*args,**kwargs):
         if request.user.is_authenticated:
@@ -115,8 +101,34 @@ class ChangepasswordView(View):
 
         return redirect("login")
 #-----------------------------------------------------------------------------------------------------
+class ContactView(View):
+    def get(self,request,*args,**kwargs):
+        categories = CategoryModel.objects.all()
 
+        context = {
+            "categories" : categories
+        }
 
+        return render(request,"contact.html",context)
+    
+    def post(self,request,*args,**kwargs):
+        name = request.POST.get("name")
+        surname = request.POST.get("surname")
+        telephone = request.POST.get("telephone")
+        email = request.POST.get("email")
+        message = request.POST.get("message")
+
+        ContactModel.objects.create(
+            name = name,
+            surname = surname,
+            telephone = telephone,
+            email = email,
+            message = message
+        )
+
+        messages.success(request,"Message sent")
+
+        return redirect("contact")
         
         
 
