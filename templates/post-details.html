@@ -74,14 +74,17 @@
                     <div class="down-contact">
                       <div class="row">
                         
-                        <div class="col-lg-8">
-                          <div class="sidebar-item contact-form">
+                  
+                        <div class="col-lg-12">
+                          <div class="sidebar-item submit-comment">
                             <div class="sidebar-heading">
-                              <h2>Send us a message</h2>
+                              <h2>Your comment</h2>
                             </div>
                             <div class="content">
-                              <form id="contact" action="" method="POST">
-                                {% csrf_token %}
+                              <form id="comment" action="#" method="POST">
+                                {% csrf_token %} 
+                                <input type="hidden" name="choice" value="comment" >
+                                <input type="hidden" name="blog_id" value="{{ blog.id }}">
                                 <div class="row">
                                   <div class="col-md-6 col-sm-12">
                                     <fieldset>
@@ -95,22 +98,17 @@
                                   </div>
                                   <div class="col-md-12 col-sm-12">
                                     <fieldset>
-                                      <input name="email" type="text" id="subject" placeholder="email">
-                                    </fieldset>
-                                  </div>
-                                  <div class="col-md-12 col-sm-12">
-                                    <fieldset>
-                                      <input name="telephone" type="text" id="telephone" placeholder="telephone">
+                                      <input name="email" type="text" id="subject" placeholder="Your email">
                                     </fieldset>
                                   </div>
                                   <div class="col-lg-12">
                                     <fieldset>
-                                      <textarea name="message" rows="6" id="message" placeholder="Your Message" required=""></textarea>
+                                      <textarea name="message" rows="6" id="message" placeholder=" your comment" required=""></textarea>
                                     </fieldset>
                                   </div>
                                   <div class="col-lg-12">
                                     <fieldset>
-                                      <button type="submit" id="form-submit" class="main-button">Send Message</button>
+                                      <button type="submit" id="form-submit" class="main-button">Submit</button>
                                     </fieldset>
                                   </div>
                                 </div>
@@ -118,7 +116,69 @@
                             </div>
                           </div>
                         </div>
-
+                        {% for comment in blog_comments %}
+                        <div class="card">
+                          <div class="card-header">
+                            {{ comment.user.username}}
+                          </div>
+                          <div class="card-body">
+                            <blockquote class="blockquote mb-0">
+                              <p>{{ comment.comment }}</p>
+                              <footer class="blockquote-footer">{{ comment.pub_date }}</cite></footer>
+                            </blockquote>
+                          </div>
+                        </div>
+                        <div class="col-lg-12">
+                          <div class="sidebar-item submit-comment">
+                            <div class="sidebar-heading">
+                              <h2>Your reply</h2>
+                            </div>
+                            <div class="content">
+                              <form id="comment" action="#" method="POST">
+                                {% csrf_token %} 
+                                <input type="hidden" name="choice" value="reply" >
+                                <input type="hidden" name="blog_id" value="{{ blog.id }}">
+                                <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                                <div class="row">
+                                  <div class="col-md-6 col-sm-12">
+                                    <fieldset>
+                                      <input name="name" type="text" id="name" placeholder="Your name" required="">
+                                    </fieldset>
+                                  </div>
+                                  <div class="col-md-6 col-sm-12">
+                                    <fieldset>
+                                      <input name="surname" type="text" id="email" placeholder="Your surname" required="">
+                                    </fieldset>
+                                  </div>
+                                  <div class="col-lg-12">
+                                    <fieldset>
+                                      <textarea name="message" rows="6" id="message" placeholder="your reply" required=""></textarea>
+                                    </fieldset>
+                                  </div>
+                                  <div class="col-lg-12">
+                                    <fieldset>
+                                      <button type="submit" id="form-submit" class="main-button">Submit</button>
+                                    </fieldset>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                          {% for reply in comment.replies.all %}
+                            <div class="card my-3 mx-5">
+                              <div class="card-header">
+                                {{ reply.user.username}}
+                              </div>
+                              <div class="card-body">
+                                <blockquote class="blockquote mb-0">
+                                  <p>{{ reply.comment }}</p>
+                                  <footer class="blockquote-footer">{{ reply.pub_date }}</cite></footer>
+                                </blockquote>
+                              </div>
+                            </div>
+                          {% endfor %}
+                        {% endfor %}
                       </div>
                     </div>
                   </div>
@@ -142,18 +202,12 @@
                       </div>
                       <div class="content">
                         <ul>
-                          <li><a href="post-details.html">
-                            <h5>Vestibulum id turpis porttitor sapien facilisis scelerisque</h5>
-                            <span>May 31, 2020</span>
+                          {% for blog in blogs %}
+                          <li><a href="{% url 'post-details' blog.id %}">
+                            <h5>{{ blog.name }}</h5>
+                            <span>{{ blog.pub_date }}</span>
                           </a></li>
-                          <li><a href="post-details.html">
-                            <h5>Suspendisse et metus nec libero ultrices varius eget in risus</h5>
-                            <span>May 28, 2020</span>
-                          </a></li>
-                          <li><a href="post-details.html">
-                            <h5>Swag hella echo park leggings, shaman cornhole ethical coloring</h5>
-                            <span>May 14, 2020</span>
-                          </a></li>
+                          {% endfor %}
                         </ul>
                       </div>
                     </div>
@@ -164,14 +218,11 @@
                         <h2>Categories</h2>
                       </div>
                       <div class="content">
+                        {% for category in categories %}
                         <ul>
-                          <li><a href="#">- Nature Lifestyle</a></li>
-                          <li><a href="#">- Awesome Layouts</a></li>
-                          <li><a href="#">- Creative Ideas</a></li>
-                          <li><a href="#">- Responsive Templates</a></li>
-                          <li><a href="#">- HTML5 / CSS3 Templates</a></li>
-                          <li><a href="#">- Creative &amp; Unique</a></li>
+                          <li><a href="{% url 'categorylink'  category.id %}">- {{ category.name }}</a></li>
                         </ul>
+                        {% endfor %}
                       </div>
                     </div>
                   </div>
@@ -181,15 +232,11 @@
                         <h2>Tag Clouds</h2>
                       </div>
                       <div class="content">
+                        {% for tag in tagclouds %}
                         <ul>
-                          <li><a href="#">Lifestyle</a></li>
-                          <li><a href="#">Creative</a></li>
-                          <li><a href="#">HTML5</a></li>
-                          <li><a href="#">Inspiration</a></li>
-                          <li><a href="#">Motivation</a></li>
-                          <li><a href="#">PSD</a></li>
-                          <li><a href="#">Responsive</a></li>
+                          <li><a href="#">{{ tag.name }}</a></li>
                         </ul>
+                        {% endfor %}
                       </div>
                     </div>
                   </div>

@@ -6,10 +6,12 @@ class HomeView(View):
     def get(self,request,*args,**kwargs):
         blogs = BlogModel.objects.order_by("-id")[:3]
         categories = CategoryModel.objects.all()
+        tagclouds = TagCloudModel.objects.all()
 
         context = {
             'blogs' : blogs,
-            'categories' : categories
+            'categories' : categories,
+            'tagclouds' : tagclouds
         }
 
         return render(request,"index.html",context)
@@ -29,9 +31,16 @@ class CategoryView(View):
 #--------------------------------------------------------------------------------------------------
 class PostDetailView(View):
     def get(self,request,id,*args,**kwargs):
+        categories = CategoryModel.objects.all()
+        tagclouds = TagCloudModel.objects.all()
+
         blog = BlogModel.objects.get(id=id)
+        blogs = BlogModel.objects.order_by("-id")
         context = {
-            "blog" : blog
+            "blog" : blog,
+            "blogs" : blogs,
+            "categories" : categories,
+            "tagclouds" : tagclouds
         }
 
         return render(request,'post-details.html',context)
@@ -68,5 +77,8 @@ class PostDetailView(View):
             )
 
             return redirect("post-details",id=id)
+        
+#------------------------------------------------------------------------------------
+
 
 

@@ -106,7 +106,7 @@
                     <div class="content">
                       <ul>
                         {% for blog in blogs %}
-                        <li><a href="post-details.html">
+                        <li><a href="{% url 'post-details' blog.id %}">
                           <h5>{{ blog.name }}</h5>
                           <span>{{ blog.pub_date }}</span>
                         </a></li>
@@ -135,15 +135,11 @@
                       <h2>Tag Clouds</h2>
                     </div>
                     <div class="content">
+                      {% for tag in tagclouds %}
                       <ul>
-                        <li><a href="#">Lifestyle</a></li>
-                        <li><a href="#">Creative</a></li>
-                        <li><a href="#">HTML5</a></li>
-                        <li><a href="#">Inspiration</a></li>
-                        <li><a href="#">Motivation</a></li>
-                        <li><a href="#">PSD</a></li>
-                        <li><a href="#">Responsive</a></li>
+                        <li><a href="#">{{ tag.name }}</a></li>
                       </ul>
+                      {% endfor %}
                     </div>
                   </div>
                 </div>

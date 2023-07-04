@@ -41,8 +41,13 @@ class CommentModel(models.Model):
     def __str__(self):
         return self.user.username + " " + str(self.id)
     
-    
+class AboutModel(models.Model):
+    name = models.TextField()
+    phone_number = models.CharField(max_length=20)
+    email = models.CharField(max_length=150)
+    streetadres = models.CharField(max_length=150)
 
+    
 
 
     
