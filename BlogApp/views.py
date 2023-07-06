@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from BlogApp.models import BlogModel,CategoryModel,TagCloudModel,CommentModel
+from BlogApp.models import BlogModel,CategoryModel,TagCloudModel,CommentModel,AboutModel
 from django.views.generic import View
 
 class HomeView(View):
@@ -21,10 +21,12 @@ class CategoryView(View):
     def get(self,request,id,*args,**kwargs):
         category = CategoryModel.objects.get(id=id)
         categories = CategoryModel.objects.all()
+        blog = BlogModel.objects.get(id=id)
 
         context = {
             'category' : category,
-            'categories' : categories
+            'categories' : categories,
+            'blog' : blog
         }
 
         return render(request,"categories.html",context)
@@ -36,12 +38,22 @@ class PostDetailView(View):
 
         blog = BlogModel.objects.get(id=id)
         blogs = BlogModel.objects.order_by("-id")
+        blog_comments = CommentModel.objects.filter(
+            blog = blog,
+            parent = None
+        )
         context = {
             "blog" : blog,
             "blogs" : blogs,
             "categories" : categories,
-            "tagclouds" : tagclouds
+            "tagclouds" : tagclouds,
+            "blog_comments" : blog_comments
         }
+        if request.user.is_authenticated:
+            user_comments = CommentModel.objects.filter(
+                user = request.user
+            )
+            context["user_comments"] = user_comments
 
         return render(request,'post-details.html',context)
     
@@ -79,6 +91,16 @@ class PostDetailView(View):
             return redirect("post-details",id=id)
         
 #------------------------------------------------------------------------------------
+class AboutView(View):
+    def get(self,request,*args,**kwargs):
+        about = AboutModel.objects.first()
+        context = {
+            'about' : about
+        }
+
+        return render(request,'about.html',context)
+    
+#--------------------------------------------------------------------------------------
 
 
 

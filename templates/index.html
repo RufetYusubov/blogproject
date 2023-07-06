@@ -48,7 +48,7 @@
                     </div>
                     <div class="down-content">
                       {% for category in blog.category.all %}
-                      <span>{{ category.name }}</span>
+                      <span>{{ category.name }}/</span>
                       {% endfor %}
                       <a href="{% url 'post-details' blog.id %}"><h4>{{ blog.name }}</h4></a>
                       <ul class="post-info">
@@ -104,14 +104,14 @@
                       <h2>Recent Posts</h2>
                     </div>
                     <div class="content">
+                      {% for blog in blogs %}
                       <ul>
-                        {% for blog in blogs %}
                         <li><a href="{% url 'post-details' blog.id %}">
                           <h5>{{ blog.name }}</h5>
                           <span>{{ blog.pub_date }}</span>
                         </a></li>
-                        {% endfor %}
                       </ul>
+                      {% endfor %}
                     </div>
                   </div>
                 </div>
@@ -121,11 +121,11 @@
                       <h2>Categories</h2>
                     </div>
                     <div class="content">
+                      {% for category in categories %}
                       <ul>
-                        {% for category in categories %}
-                        <li><a href="#">- {{ category.name }}</a></li>
-                        {% endfor %}
+                        <li><a href="{% url 'categorylink' category.id %}">- {{ category.name }}</a></li>
                       </ul>
+                      {% endfor %}
                     </div>
                   </div>
                 </div>

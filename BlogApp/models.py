@@ -43,12 +43,10 @@ class CommentModel(models.Model):
     
 class AboutModel(models.Model):
     name = models.TextField()
-    phone_number = models.CharField(max_length=20)
-    email = models.CharField(max_length=150)
-    streetadres = models.CharField(max_length=150)
 
     
-
+    def __str__(self) -> str:
+        return self.email
 
     
     
