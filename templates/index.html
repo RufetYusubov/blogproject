@@ -137,7 +137,7 @@
                     <div class="content">
                       {% for tag in tagclouds %}
                       <ul>
-                        <li><a href="#">{{ tag.name }}</a></li>
+                        <li><a href="{% url 'tagcloud' tag.id %}">{{ tag.name }}</a></li>
                       </ul>
                       {% endfor %}
                     </div>
