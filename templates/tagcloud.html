@@ -1,252 +1,129 @@
 {% extends 'base.html' %} 
 {% block title %} 
-Details
+Blog Entries
 {% endblock %} 
 
 {% block content %}
- <!-- Page Content -->
-     <!-- Banner Starts Here -->
-     <div class="heading-page header-text">
-       <section class="page-heading">
-         <div class="container">
-           <div class="row">
-             <div class="col-lg-12">
-               <div class="text-content">
-                 <h4>Post Details</h4>
-                 <h2>{{ category.name }}</h2>
-               </div>
-             </div>
-           </div>
-         </div>
-       </section>
-     </div>
-     
-     <!-- Banner Ends Here -->
+    <!-- Page Content -->
+    <!-- Banner Starts Here -->
+    <div class="heading-page header-text">
+      <section class="page-heading">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="text-content">
+                <h4>Recent Posts</h4>
+                <h2>Blog Entries-{{ tagcloud.name }}</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    
+    <!-- Banner Ends Here -->
 
-
-     <section class="blog-posts grid-system">
-       <div class="container">
-         <div class="row">
-           <div class="col-lg-8">
-             <div class="all-blog-posts">
-               <div class="row">
-                {% for blog in blogs %}
-                 <div class="col-lg-12">
-                   <div class="blog-post">
-                     <div class="blog-thumb">
-                       <img src="{{ blog.image.url }}" alt="{{ blog.name }}">
-                     </div>
-                     <div class="down-content">
-                       {% for category in blog.category.all %}
-                       <span>{{ category.name }}/</span>
-                       {% endfor %}
-                       <a href="{% url 'post-details' blog.id %}"><h4>{{ blog.name }}</h4></a>
-                       <ul class="post-info">
-                         <li><a href="#">{{ blog.user.username }}</a></li>
-                         <li><a href="#">{{ blog.pub_date }}</a></li>
-                         <li><a href="#">10 Comments</a></li>
-                       </ul>
-                       <p>{{ blog.content | safe}} <a
-                          rel="nofollow" href="https://templatemo.com/tag/multi-page" target="_parent"></a> <a rel="nofollow" href="https://templatemo.com/tag/resume" target="_parent"></a>
-                         <br><br></p>
-                       <div class="post-options">
-                         <div class="row">
-                           <div class="col-6">
+    <section class="blog-posts grid-system">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="all-blog-posts">
+              <div class="row">
+              {% for blog in blog_tag %}
+                <div class="col-lg-6">
+                  <div class="blog-post">
+                    <div class="blog-thumb">
+                      <img src="{{ blog.image.url }}" alt="">
+                    </div>
+                    <div class="down-content">
+                      {% for category in blog.category.all %}
+                      <span>{{ category.name }}</span>
+                      {% endfor %}
+                      <a href="{% url 'post-details' blog.id %}"><h4>{{ blog.name }}</h4></a>
+                      <ul class="post-info">
+                        <li><a href="#">{{ blog.user.username }}</a></li>
+                        <li><a href="#">{{ blog.pub_date }}</a></li>
+                        <li><a href="#">12 Comments</a></li>
+                      </ul>
+                      <p>{{ blog.content | truncatechars_html:200 | safe }} </p>
+                      <div class="post-options">
+                        <div class="row">
+                          <div class="col-lg-12">
                             {% for tag in blog.tag_cloud.all %}
-                             <ul class="post-tags">
-                               <li><i class="fa fa-tags"></i></li>
-                               <li><a href="#">{{ tag.name }}</a>,</li>
-                             </ul>
+                            <ul class="post-tags">
+                              <li><i class="fa fa-tags"></i></li>
+                              <li><a href="{% url 'tagcloud' tag.id %}">{{ tag.name }}</a></li>
+                            </ul>
                             {% endfor %}
-                           </div>
-                           <div class="col-6">
-                             <ul class="post-share">
-                               <li><i class="fa fa-share-alt"></i></li>
-                               <li><a href="#">Facebook</a>,</li>
-                               <li><a href="#"> Twitter</a></li>
-                             </ul>
-                           </div>
-                         </div>
-                       </div>
-                     </div>
-                   </div>
-                 </div>
-                 {% endfor %}
-                 <div class="col-lg-12">
-                   <div class="down-contact">
-                     <div class="row">
-                       
-                 
-                       <div class="col-lg-12">
-                         <div class="sidebar-item submit-comment">
-                           <div class="sidebar-heading">
-                             <h2>Your comment</h2>
-                           </div>
-                           <div class="content">
-                             <form id="comment" action="#" method="POST">
-                               {% csrf_token %} 
-                               <input type="hidden" name="choice" value="comment" >
-                               <input type="hidden" name="blog_id" value="{{ blog.id }}">
-                               <div class="row">
-                                 <div class="col-md-6 col-sm-12">
-                                   <fieldset>
-                                     <input name="name" type="text" id="name" placeholder="Your name" required="">
-                                   </fieldset>
-                                 </div>
-                                 <div class="col-md-6 col-sm-12">
-                                   <fieldset>
-                                     <input name="surname" type="text" id="email" placeholder="Your surname" required="">
-                                   </fieldset>
-                                 </div>
-                                 <div class="col-md-12 col-sm-12">
-                                   <fieldset>
-                                     <input name="email" type="text" id="subject" placeholder="Your email">
-                                   </fieldset>
-                                 </div>
-                                 <div class="col-lg-12">
-                                   <fieldset>
-                                     <textarea name="message" rows="6" id="message" placeholder=" your comment" required=""></textarea>
-                                   </fieldset>
-                                 </div>
-                                 <div class="col-lg-12">
-                                   <fieldset>
-                                     <button type="submit" id="form-submit" class="main-button">Submit</button>
-                                   </fieldset>
-                                 </div>
-                               </div>
-                             </form>
-                           </div>
-                         </div>
-                       </div>
-                       {% for comment in blog_comments %}
-                       <div class="card">
-                         <div class="card-header">
-                           {{ comment.user.username}}
-                         </div>
-                         <div class="card-body">
-                           <blockquote class="blockquote mb-0">
-                             <p>{{ comment.comment }}</p>
-                             <footer class="blockquote-footer">{{ comment.pub_date }}</cite></footer>
-                           </blockquote>
-                         </div>
-                       </div>
-                       <div class="col-lg-12">
-                         <div class="sidebar-item submit-comment">
-                           <div class="sidebar-heading">
-                             <h2>Your reply</h2>
-                           </div>
-                           <div class="content">
-                             <form id="comment" action="#" method="POST">
-                               {% csrf_token %} 
-                               <input type="hidden" name="choice" value="reply" >
-                               <input type="hidden" name="blog_id" value="{{ blog.id }}">
-                               <input type="hidden" name="comment_id" value="{{ comment.id }}">
-                               <div class="row">
-                                 <div class="col-md-6 col-sm-12">
-                                   <fieldset>
-                                     <input name="name" type="text" id="name" placeholder="Your name" required="">
-                                   </fieldset>
-                                 </div>
-                                 <div class="col-md-6 col-sm-12">
-                                   <fieldset>
-                                     <input name="surname" type="text" id="email" placeholder="Your surname" required="">
-                                   </fieldset>
-                                 </div>
-                                 <div class="col-lg-12">
-                                   <fieldset>
-                                     <textarea name="message" rows="6" id="message" placeholder="your reply" required=""></textarea>
-                                   </fieldset>
-                                 </div>
-                                 <div class="col-lg-12">
-                                   <fieldset>
-                                     <button type="submit" id="form-submit" class="main-button">Submit</button>
-                                   </fieldset>
-                                 </div>
-                               </div>
-                             </form>
-                           </div>
-                         </div>
-                       </div>
-                         {% for reply in comment.replies.all %}
-                           <div class="card my-3 mx-5">
-                             <div class="card-header">
-                               {{ reply.user.username}}
-                             </div>
-                             <div class="card-body">
-                               <blockquote class="blockquote mb-0">
-                                 <p>{{ reply.comment }}</p>
-                                 <footer class="blockquote-footer">{{ reply.pub_date }}</cite></footer>
-                               </blockquote>
-                             </div>
-                           </div>
-                         {% endfor %}
-                       {% endfor %}
-                     </div>
-                   </div>
-                 </div>
-               </div>
-             </div>
-           </div>
-           <div class="col-lg-4">
-             <div class="sidebar">
-               <div class="row">
-                 <div class="col-lg-12">
-                   <div class="sidebar-item search">
-                     <form id="search_form" name="gs" method="GET" action="#">
-                       <input type="text" name="q" class="searchText" placeholder="type to search..." autocomplete="on">
-                     </form>
-                   </div>
-                 </div>
-                 <div class="col-lg-12">
-                   <div class="sidebar-item recent-posts">
-                     <div class="sidebar-heading">
-                       <h2>Recent Posts</h2>
-                     </div>
-                     <div class="content">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="sidebar">
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="sidebar-item search">
+                    <form id="search_form" name="gs" method="GET" action="#">
+                      <input type="text" name="q" class="searchText" placeholder="type to search..." autocomplete="on">
+                    </form>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="sidebar-item recent-posts">
+                    <div class="sidebar-heading">
+                      <h2>Recent Posts</h2>
+                    </div>
+                    <div class="content">
                       {% for blog in blogs %}
-                       <ul>
-                         <li><a href="{% url 'post-details' blog.id %}">
-                           <h5>{{ blog.name }}</h5>
-                           <span>{{ blog.pub_date }}</span>
-                         </a></li>
-                       </ul>
+                      <ul>
+                        <li><a href="{% url 'post-details' blog.id %}">
+                          <h5>{{ blog.name }}</h5>
+                          <span>{{ blog.pub_date }}</span>
+                        </a></li>
+                      </ul>
                       {% endfor %}
-                     </div>
-                   </div>
-                 </div>
-                 <div class="col-lg-12">
-                   <div class="sidebar-item categories">
-                     <div class="sidebar-heading">
-                       <h2>Categories</h2>
-                     </div>
-                     <div class="content">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="sidebar-item categories">
+                    <div class="sidebar-heading">
+                      <h2>Categories</h2>
+                    </div>
+                    <div class="content">
                       {% for category in categories %}
-                       <ul>
-                         <li><a href="{% url 'categorylink'  category.id %}">- {{ category.name }}</a></li>
-                       </ul>
+                      <ul>
+                        <li><a href="{% url 'categorylink' category.id %}">- {{ category.name }}</a></li>
+                      </ul>
                       {% endfor %}
-                     </div>
-                   </div>
-                 </div>
-                 <div class="col-lg-12">
-                   <div class="sidebar-item tags">
-                     <div class="sidebar-heading">
-                       <h2>Tag Clouds</h2>
-                     </div>
-                     <div class="content">
-                       {% for tag in tagclouds %}
-                       <ul>
-                         <li><a href="#">{{ tag.name }}</a></li>
-                       </ul>
-                       {% endfor %}
-                     </div>
-                   </div>
-                 </div>
-               </div>
-             </div>
-           </div>
-         </div>
-       </div>
-     </section>
-
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="sidebar-item tags">
+                    <div class="sidebar-heading">
+                      <h2>Tag Clouds</h2>
+                    </div>
+                    <div class="content">
+                      {% for tag in tagclouds %}
+                      <ul>
+                        <li><a href="{% url 'tagcloud' tag.id %}">{{ tag.name }}</a></li>
+                      </ul>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 {% endblock %}

@@ -32,6 +32,10 @@ class CommentModel(models.Model):
     parent = models.ForeignKey("self", on_delete=models.CASCADE,related_name="replies")
     comment = models.TextField()
     pub_date = models.DateField(auto_now_add = True)
+    name = models.CharField(max_length=100,blank=True,null=True)
+    surname = models.CharField(max_length=100,blank=True,null=True)
+    email = models.EmailField(blank=True,null=True)
+    
 
 
     class Meta:
@@ -47,6 +51,7 @@ class AboutModel(models.Model):
     
     def __str__(self) -> str:
         return self.email
+    
 
     
     
