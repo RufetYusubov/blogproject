@@ -86,6 +86,18 @@ Details
                                <input type="hidden" name="choice" value="comment" >
                                <input type="hidden" name="blog_id" value="{{ blog.id }}">
                                <div class="row">
+                                {% if request.user.is_authenticated %} 
+                                <div class="col-lg-12">
+                                  <fieldset>
+                                    <textarea name="comment" rows="6" id="message" placeholder=" your comment" required=""></textarea>
+                                  </fieldset>
+                                </div>
+                                <div class="col-lg-12">
+                                  <fieldset>
+                                    <button type="submit" id="form-submit" class="main-button">Submit</button>
+                                  </fieldset>
+                                </div>
+                                {% else %}
                                  <div class="col-md-6 col-sm-12">
                                    <fieldset>
                                      <input name="name" type="text" id="name" placeholder="Your name" required="">
@@ -102,31 +114,45 @@ Details
                                    </fieldset>
                                  </div>
                                  <div class="col-lg-12">
-                                   <fieldset>
-                                     <textarea name="comment" rows="6" id="message" placeholder=" your comment" required=""></textarea>
-                                   </fieldset>
-                                 </div>
-                                 <div class="col-lg-12">
-                                   <fieldset>
-                                     <button type="submit" id="form-submit" class="main-button">Submit</button>
-                                   </fieldset>
-                                 </div>
+                                  <fieldset>
+                                    <textarea name="comment" rows="6" id="message" placeholder=" your comment" required=""></textarea>
+                                  </fieldset>
+                                </div>
+                                <div class="col-lg-12">
+                                  <fieldset>
+                                    <button type="submit" id="form-submit" class="main-button">Submit</button>
+                                  </fieldset>
+                                </div>
+                              {% endif %}
                                </div>
                              </form>
                            </div>
                          </div>
                        </div>
                        {% for comment in blog_comments %}
-                       <div class="card">
+                       <div class="card mt-5" style="width:100%;">
                          <div class="card-header">
-                           {{ comment.user.username}}
+                           <p style="float:left">{{ comment.name}} {{ comment.surname }}</p>
+                           <p style="float:right">{{ comment.pub_date }}</p>
                          </div>
                          <div class="card-body">
                            <blockquote class="blockquote mb-0">
                              <p>{{ comment.comment }}</p>
-                             <footer class="blockquote-footer">{{ comment.pub_date }}</cite></footer>
                            </blockquote>
                          </div>
+                         {% for reply in comment.replies.all %}
+                           <div class="card my-3 mx-5" style="width:90%;">
+                             <div class="card-header">
+                               <p style="float:left;">{{ reply.name}} {{ reply.surname }}</p> 
+                               <p style="float:right;">{{ reply.pub_date }}</p>
+                             </div>
+                             <div class="card-body">
+                               <blockquote class="blockquote mb-0">
+                                 <p>{{ reply.comment }}</p>
+                               </blockquote>
+                             </div>
+                           </div>
+                         {% endfor %}
                        </div>
                        <div class="col-lg-12">
                          <div class="sidebar-item submit-comment">
@@ -140,6 +166,18 @@ Details
                                <input type="hidden" name="blog_id" value="{{ blog.id }}">
                                <input type="hidden" name="comment_id" value="{{ comment.id }}">
                                <div class="row">
+                                {% if request.user.is_authenticated %} 
+                                <div class="col-lg-12">
+                                  <fieldset>
+                                    <textarea name="reply" rows="6" id="message" placeholder="your reply" required=""></textarea>
+                                  </fieldset>
+                                </div> 
+                                <div class="col-lg-12">
+                                  <fieldset>
+                                    <button type="submit" id="form-submit" class="main-button">Submit</button>
+                                  </fieldset>
+                                </div>
+                                {% else %}
                                  <div class="col-md-6 col-sm-12">
                                    <fieldset>
                                      <input name="name" type="text" id="name" placeholder="Your name" required="">
@@ -151,33 +189,21 @@ Details
                                    </fieldset>
                                  </div>
                                  <div class="col-lg-12">
-                                   <fieldset>
-                                     <textarea name="message" rows="6" id="message" placeholder="your reply" required=""></textarea>
-                                   </fieldset>
-                                 </div>
-                                 <div class="col-lg-12">
-                                   <fieldset>
-                                     <button type="submit" id="form-submit" class="main-button">Submit</button>
-                                   </fieldset>
-                                 </div>
+                                  <fieldset>
+                                    <textarea name="reply" rows="6" id="message" placeholder="your reply" required=""></textarea>
+                                  </fieldset>
+                                </div> 
+                                <div class="col-lg-12">
+                                  <fieldset>
+                                    <button type="submit" id="form-submit" class="main-button">Submit</button>
+                                  </fieldset>
+                                </div>
+                              {% endif %}
                                </div>
                              </form>
                            </div>
                          </div>
                        </div>
-                         {% for reply in comment.replies.all %}
-                           <div class="card my-3 mx-5">
-                             <div class="card-header">
-                               {{ reply.user.username}}
-                             </div>
-                             <div class="card-body">
-                               <blockquote class="blockquote mb-0">
-                                 <p>{{ reply.comment }}</p>
-                                 <footer class="blockquote-footer">{{ reply.pub_date }}</cite></footer>
-                               </blockquote>
-                             </div>
-                           </div>
-                         {% endfor %}
                        {% endfor %}
                      </div>
                    </div>

@@ -34,12 +34,16 @@ class SignupView(View):
         username = request.POST.get("username")
         newpassword1 = request.POST.get("newpassword1")
         newpassword2 = request.POST.get("newpassword2")
+        name = request.POST.get("name")
+        surname = request.POST.get("surname")
 
         if not User.objects.filter(username=username).exists():
             if newpassword1 == newpassword2 and checkpassword(newpassword1) and check_validation(newpassword1):
                 User.objects.create_user(
                     username=username,
-                    password=newpassword1
+                    password=newpassword1,
+                    first_name = name,
+                    last_name = surname
                 )
                 user = authenticate(request, username = username, password = newpassword1)
                 if user is not None:

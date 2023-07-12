@@ -98,10 +98,15 @@ class PostDetailView(View):
     def post(self,request,id,*args,**kwargs):
         choice = request.POST.get("choice")
         if choice == "comment":
+            if request.user.is_authenticated:
+                name = request.user.first_name
+                surname = request.user.last_name
+                email = request.user.email
+            else:
+                name = request.POST.get("name")
+                surname = request.POST.get("surname")
+                email = request.POST.get("email")
             comment = request.POST.get("comment")
-            name = request.POST.get("name")
-            surname = request.POST.get("surname")
-            email = request.POST.get("email")
             
             blog_id = request.POST.get("blog_id")
             blog = BlogModel.objects.get(id=blog_id)
@@ -116,8 +121,16 @@ class PostDetailView(View):
                 
             )
 
+
         elif choice == "reply":
             reply = request.POST.get("reply")
+            if request.user.is_authenticated:
+                    name = request.user.first_name
+                    surname = request.user.last_name
+            else:
+                name = request.POST.get("name")
+                surname = request.POST.get("surname")
+            comment = request.POST.get("comment")
 
             blog_id = request.POST.get("blog_id")
             blog = BlogModel.objects.get(id=blog_id)
@@ -129,10 +142,12 @@ class PostDetailView(View):
                 user = request.user,
                 blog = blog,
                 comment = reply,
-                parent = comment
+                parent = comment,
+                name = name,
+                surname = surname
             )
 
-            return redirect("post-details",id=id)
+        return redirect("post-details",id=id)
         
 #------------------------------------------------------------------------------------
 class AboutView(View):

@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="{% static 'css/fontawesome.css' %}">
     <link rel="stylesheet" href="{% static 'css/templatemo-stand-blog.css' %}">
     <link rel="stylesheet" href="{% static 'css/owl.css' %}">
+    {% block css %}{% endblock %}
 <!--
 
 TemplateMo 551 Stand Blog
@@ -134,6 +135,8 @@ https://templatemo.com/tm-551-stand-blog
           }
       }
     </script>
+
+    {% block javascript %}{% endblock %}
 
   </body>
 </html>
