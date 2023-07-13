@@ -9,12 +9,12 @@ class UserListSerializer(ModelSerializer):
 
 
 
-class UserCreateSerilizer(ModelSerializer):
+class UserCreateSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ("username","password")
 
-class UserUpdateSerilizer(ModelSerializer):
+class UserUpdateSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = "__all__"

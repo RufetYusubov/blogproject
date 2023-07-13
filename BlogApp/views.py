@@ -106,20 +106,31 @@ class PostDetailView(View):
                 name = request.POST.get("name")
                 surname = request.POST.get("surname")
                 email = request.POST.get("email")
-            comment = request.POST.get("comment")
+            comment = request.POST.get("comments")
             
             blog_id = request.POST.get("blog_id")
             blog = BlogModel.objects.get(id=blog_id)
 
-            CommentModel.objects.create(
-                user = request.user,
-                blog = blog,
-                comment = comment,
-                name = name,
-                surname = surname,
-                email = email
-                
-            )
+            if request.user.is_authenticated:
+                CommentModel.objects.create(
+                    user = request.user,
+                    blog = blog,
+                    comment = comment,
+                    name = name,
+                    surname = surname,
+                    email = email
+                    
+                )
+            else:
+                 CommentModel.objects.create(
+                    blog = blog,
+                    comment = comment,
+                    name = name,
+                    surname = surname,
+                    email = email
+                    
+                )
+
 
 
         elif choice == "reply":
@@ -127,9 +138,11 @@ class PostDetailView(View):
             if request.user.is_authenticated:
                     name = request.user.first_name
                     surname = request.user.last_name
+                    email = request.user.email
             else:
                 name = request.POST.get("name")
                 surname = request.POST.get("surname")
+                email = request.POST.get("email")
             comment = request.POST.get("comment")
 
             blog_id = request.POST.get("blog_id")
@@ -138,14 +151,25 @@ class PostDetailView(View):
             comment_id = request.POST.get("comment_id")
             comment = CommentModel.objects.get(id=comment_id)
 
-            CommentModel.objects.create(
-                user = request.user,
-                blog = blog,
-                comment = reply,
-                parent = comment,
-                name = name,
-                surname = surname
-            )
+            if request.user.is_authenticated:
+                CommentModel.objects.create(
+                    user = request.user,
+                    blog = blog,
+                    comment = reply,
+                    parent = comment,
+                    name = name,
+                    surname = surname,
+                    email = email
+                )
+            else:
+                 CommentModel.objects.create(
+                    blog = blog,
+                    comment = reply,
+                    parent = comment,
+                    name = name,
+                    surname = surname,
+                    email = email
+                )
 
         return redirect("post-details",id=id)
         
@@ -160,6 +184,7 @@ class AboutView(View):
         return render(request,'about.html',context)
     
 #--------------------------------------------------------------------------------------
-
-
-
+def DeleteComment(request,id):
+    comment = CommentModel.objects.get(id=id)
+    comment.delete()
+    return redirect("post-details", id=comment.blog.id)

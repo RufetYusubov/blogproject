@@ -24,6 +24,53 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'css/util.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 <!--===============================================================================================-->
+{% endblock %} 
+
+{% block header %}
+
+<header class="" style="position: relative; bottom:0;">
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'index' %}"><h2>Blog<em>.</em></h2></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item ">
+            <a class="nav-link" href="{% url 'index' %}">Home
+            </a>
+          </li> 
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'about' %}">About Us</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'blog' %}">Blog Entries</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
+          </li>
+        {% if not request.user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'login' %}">Login
+				<span class="sr-only">(current)</span>
+			</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
+          </li>
+        {% else %} 
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+          </li>
+        {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+
 {% endblock %}
 
 {% block content %}
@@ -32,7 +79,8 @@
 	<div class="limiter">
 		<div class="container-login100" style="background-image: url('/static/images/bg-01.jpg');">
 			<div class="wrap-login100">
-				<form class="login100-form validate-form">
+				<form class="login100-form validate-form" method="POST">
+					{% csrf_token %}
 					<span class="login100-form-logo">
 						<i class="zmdi zmdi-landscape"></i>
 					</span>
@@ -47,7 +95,7 @@
 					</div>
 
 					<div class="wrap-input100 validate-input" data-validate="Enter password">
-						<input class="input100" type="password" name="pass" placeholder="Password">
+						<input class="input100" type="password" name="newpassword1" placeholder="Password">
 						<span class="focus-input100" data-placeholder="&#xf191;"></span>
 					</div>
 
@@ -63,17 +111,23 @@
 							Login
 						</button>
 					</div>
+					{% if messages %}
+					<ul class="messages">
+					{% for message in messages %}
+					 <li{% if message.tags %} class="btn btn-danger" class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+					{% endfor %}
+					</ul>
+					{% endif %}
 
 					<div class="text-center p-t-90">
-						<a class="txt1" href="#">
+						<a class="txt1" href="{% url 'changepassword' %}">
 							Forgot Password?
 						</a>
 					</div>
 				</form>
 			</div>
 		</div>
-	</div>
-	
+	</div>	
 
 	<div id="dropDownSelect1"></div>
 </body>

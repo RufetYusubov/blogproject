@@ -1,7 +1,7 @@
 from rest_framework.generics import ListAPIView,CreateAPIView,RetrieveUpdateDestroyAPIView
 from django.contrib.auth.models import User
 
-from account.api.serializers import UserListSerializer,UserCreateSerilizer,UserUpdateSerilizer
+from account.api.serializers import UserListSerializer,UserCreateSerializer,UserUpdateSerializer
 from account.api.permissions import IsOwner
 
 class UserListAPIView(ListAPIView):
@@ -10,10 +10,10 @@ class UserListAPIView(ListAPIView):
 
 class UserCreateAPIView(CreateAPIView):
     queryset = User.objects.all()
-    serializer_class = UserCreateSerilizer
+    serializer_class = UserCreateSerializer
 
 class UserRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
-    serializer_class = UserUpdateSerilizer
+    serializer_class = UserUpdateSerializer
     lookup_field = "pk"
     permission_classes = (IsOwner,)

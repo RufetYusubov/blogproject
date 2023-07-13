@@ -27,7 +27,7 @@ class BlogModel(models.Model):
         return self.name
     
 class CommentModel(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="user_comments")
+    user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="user_comments",blank=True,null=True)
     blog = models.ForeignKey(BlogModel,on_delete=models.CASCADE,related_name="blog_comments")
     parent = models.ForeignKey("self", on_delete=models.CASCADE,blank=True,null=True,related_name="replies")
     comment = models.TextField()
