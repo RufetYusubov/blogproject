@@ -53,9 +53,9 @@ class SignupView(View):
             else:
                 if  newpassword1 != newpassword2:
                     messages.info(request, "There is a password mismatch")
-                if not checkpassword(newpassword1):
+                elif not checkpassword(newpassword1):
                     messages.info(request,"Password must be at least 8 symbols")
-                if not check_validation(newpassword1):
+                elif not check_validation(newpassword1):
                     messages.info(request,"Password must contain both characters and numbers")
                 return redirect("signup")
         else:
@@ -70,9 +70,9 @@ class LoginView(View):
     
     def post(self,request,*args,**kwargs):
         username = request.POST.get("username")
-        newpassword1 = request.POST.get("newpassword1")
+        password = request.POST.get("password")
 
-        user = authenticate(request, username = username, password = newpassword1)
+        user = authenticate(request, username = username, password = password)
         if user is not None:
             login(request,user)
             messages.success(request, "You logged in")

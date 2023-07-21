@@ -179,11 +179,16 @@ Details
                        {% for comment in blog_comments %}
                        <div class="card mt-5" style="width:100%;">
                          <div class="card-header">
-                           <p style="float:left">{{ comment.name}} {{ comment.surname }} </p>
+                           {% if comment.user %}
+                           <p style="float:left">{{ comment.user.username }} </p>
                            <p style="float:right">{{ comment.pub_date }}</p>
-                           {% if comment in user_comments %}
-                           <a href = "{% url 'delete_comment' comment.id %}" style = "float:right;">Delete</a>
+                           {% else %}
+                           <p style="float:left">{{ comment.name }} {{ comment.surname }} </p>
+                           <p style="float:right">{{ comment.pub_date }}</p>
                            {% endif %} 
+                           {% if request.user == comment.user %} 
+                           <a href = "{% url 'delete_comment' comment.id %}" style = "float:right;">Delete</a>
+                           {% endif %}
                          </div>
                          <div class="card-body">
                            <blockquote class="blockquote mb-0">
@@ -193,9 +198,14 @@ Details
                          {% for reply in comment.replies.all %}
                            <div class="card my-3 mx-5" style="width:90%;">
                              <div class="card-header">
+                              {% if reply.user %} 
+                               <p style="float:left;">{{ reply.user.username }}</p> 
+                               <p style="float:right;">{{ reply.pub_date }}</p>
+                              {% else %}
                                <p style="float:left;">{{ reply.name}} {{ reply.surname }}</p> 
                                <p style="float:right;">{{ reply.pub_date }}</p>
-                               {% if reply in user_comments %}
+                              {% endif %}
+                               {% if request.user == reply.user %}
                                <a href = "{% url 'delete_comment' reply.id %}" style = "float:right;">Delete</a>
                                {% endif %} 
                              </div>
