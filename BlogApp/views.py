@@ -2,11 +2,15 @@ from django.shortcuts import render,redirect
 from BlogApp.models import BlogModel,CategoryModel,TagCloudModel,CommentModel,AboutModel
 from django.views.generic import View
 
+
 class HomeView(View):
     def get(self,request,*args,**kwargs):
+        if not request.user.is_authenticated:
+            return redirect("login")
         blogs = BlogModel.objects.order_by("-id")[:3]
         categories = CategoryModel.objects.all()
         tagclouds = TagCloudModel.objects.all()
+        
 
         context = {
             'blogs' : blogs,

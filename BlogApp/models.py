@@ -43,7 +43,7 @@ class CommentModel(models.Model):
         ordering = ("id",)
 
     def __str__(self):
-        return self.user.username + " " + str(self.id)
+        return self.name +" "+ self.surname+" " + str(self.id)
     
 class AboutModel(models.Model):
     name = models.TextField()
