@@ -50,7 +50,7 @@ class AboutModel(models.Model):
 
     
     def __str__(self) -> str:
-        return self.email
+        return self.name
     
 
     

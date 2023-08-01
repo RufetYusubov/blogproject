@@ -40,8 +40,8 @@ class SignupView(View):
         if not User.objects.filter(username=username).exists():
             if newpassword1 == newpassword2 and checkpassword(newpassword1) and check_validation(newpassword1):
                 User.objects.create_user(
-                    username=username,
-                    password=newpassword1,
+                    username = username,
+                    password = newpassword1,
                     first_name = name,
                     last_name = surname
                 )
@@ -100,12 +100,20 @@ class ChangepasswordView(View):
         newpassword2 = request.POST.get("newpassword2")
         user = User.objects.get(username=username)
 
-        if newpassword1 == newpassword2:
+        if newpassword1 == newpassword2 and checkpassword(newpassword1) and check_validation(newpassword1):
             user.set_password(newpassword1)
             user.save()
             messages.success(request,"Password changed")
+            return redirect("login")
+        else:
+            if  newpassword1 != newpassword2:
+                    messages.info(request, "There is a password mismatch")
+            elif not checkpassword(newpassword1):
+                    messages.info(request,"Password must be at least 8 symbols")
+            elif not check_validation(newpassword1):
+                    messages.info(request,"Password must contain both characters and numbers")
+            return redirect("changepassword")
 
-        return redirect("login")
 #-----------------------------------------------------------------------------------------------------
 class ContactView(View):
     def get(self,request,*args,**kwargs):
