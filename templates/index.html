@@ -100,7 +100,7 @@
                       <ul class="post-info">
                         <li><a href="#">{{ blog.user.username }}</a></li>
                         <li><a href="#">{{ blog.pub_date }}</a></li>
-                        <li><a href="#">Comments {{ blog.blog_comments | length }}</a></li>
+                        <li><a href="#">Comments {{ blog.comment_count }}</a></li>
                       </ul>
                       <p>{{ blog.content | truncatechars_html:500 | safe }}<a rel="nofollow" href="https://templatemo.com/contact" target="_parent"></a> for more info. Thank you.</p>
                       <div class="post-options">
