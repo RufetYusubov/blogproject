@@ -10,7 +10,8 @@ urlpatterns = [
     path('blog/',include('BlogApp.urls')),
     path('account/',include('account.urls')),
     path('api-auth',include('rest_framework.urls')),
-    path('api/',include("BlogApp.api.urls"))
+    path('api/',include("BlogApp.api.urls")),
+    path('api/user/',include('account.api.urls'))
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

@@ -26,6 +26,10 @@ class BlogModel(models.Model):
     def __str__(self) -> str:
         return self.name
     
+    def comment_count(self):
+        # Bu metod, blog gönderisine aid yorum sayısını hesaplar ve döndürür
+        return CommentModel.objects.filter(blog=self).count()
+    
 class CommentModel(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="user_comments",blank=True,null=True)
     blog = models.ForeignKey(BlogModel,on_delete=models.CASCADE,related_name="blog_comments")

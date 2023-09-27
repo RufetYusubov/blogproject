@@ -7,18 +7,20 @@ class HomeView(View):
     def get(self,request,*args,**kwargs):
         if not request.user.is_authenticated:
             return redirect("login")
+
         blogs = BlogModel.objects.order_by("-id")[:3]
         categories = CategoryModel.objects.all()
         tagclouds = TagCloudModel.objects.all()
-        
 
         context = {
             'blogs' : blogs,
             'categories' : categories,
-            'tagclouds' : tagclouds
+            'tagclouds' : tagclouds,
         }
 
+
         return render(request,"index.html",context)
+
 #-----------------------------------------------------------------------------------------
 
 class CategoryView(View):
@@ -110,7 +112,7 @@ class PostDetailView(View):
                 name = request.POST.get("name")
                 surname = request.POST.get("surname")
                 email = request.POST.get("email")
-            comment = request.POST.get("comments")
+            comment = request.POST.get("comment")
             
             blog_id = request.POST.get("blog_id")
             blog = BlogModel.objects.get(id=blog_id)
