@@ -64,14 +64,6 @@
 							Login
 						</button>
 					</div>
-					{% if messages %}
-					<ul class="messages">
-						{% for message in messages %}
-						<li{% if message.tags %} class="btn btn-danger" class="{{ message.tags }}" {% endif %}>{{
-							message }}</li>
-						{% endfor %}
-					</ul>
-					{% endif %}
 					<p style="margin-top: 20px;">Dont have an account?<a href="{% url 'signup' %}"> Sign up</a></p>
 					<div class="text-center p-t-90">
 						<a class="txt1" href="{% url 'changepassword' %}">
