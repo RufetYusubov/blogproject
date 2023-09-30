@@ -5,11 +5,17 @@ from django.contrib.auth.models import User
 class CategoryModel(models.Model):
     name = models.CharField(max_length=256)
 
+    class Meta:
+        verbose_name = "Category"
+
     def __str__(self) -> str:
         return self.name
 
 class TagCloudModel(models.Model):
     name = models.CharField(max_length=256)
+
+    class Meta:
+        verbose_name = "Tag cloud"
 
     def __str__(self) -> str:
         return self.name
@@ -22,6 +28,10 @@ class BlogModel(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="blogs")
     category = models.ManyToManyField(CategoryModel, related_name="category_blogs")
     tag_cloud = models.ManyToManyField(TagCloudModel,related_name="tagcloud_blogs")
+
+
+    class Meta:
+        verbose_name = "Blog"
 
     def __str__(self) -> str:
         return self.name
@@ -47,15 +57,17 @@ class CommentModel(models.Model):
         ordering = ("id",)
 
     def __str__(self):
-        return self.name +" "+ self.surname+" " + str(self.id)
+        return str(self.name) + " " + str(self.surname) + " " + str(self.id)
     
 class AboutModel(models.Model):
     name = models.TextField()
 
+
+    class Meta:
+        verbose_name = "About"
+
     
     def __str__(self) -> str:
         return self.name
-    
-
     
     

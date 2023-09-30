@@ -1,15 +1,18 @@
-{% extends 'base.html' %} 
-{% block title %} 
+{% extends 'base.html' %}
+{% block title %}
 Details
-{% endblock %} 
+{% endblock %}
 
 {% block header %}
 
 <header class="">
   <nav class="navbar navbar-expand-lg">
     <div class="container">
-      <a class="navbar-brand" href="{% url 'index' %}"><h2>Blog<em>.</em></h2></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <a class="navbar-brand" href="{% url 'index' %}">
+        <h2>Blog<em>.</em></h2>
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+        aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -17,7 +20,7 @@ Details
           <li class="nav-item ">
             <a class="nav-link" href="{% url 'index' %}">Home
             </a>
-          </li> 
+          </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'about' %}">About Us</a>
           </li>
@@ -27,20 +30,20 @@ Details
           <li class="nav-item">
             <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
           </li>
-        {% if not request.user.is_authenticated %}
+          {% if not request.user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'login' %}">Login
-			</a>
+            </a>
           </li>
           <li class="nav-item">
             <a class="nav-link " href="{% url 'signup' %}">Sign Up
-			</a>
+            </a>
           </li>
-        {% else %} 
+          {% else %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'logout' %}">Logout</a>
           </li>
-        {% endif %}
+          {% endif %}
         </ul>
       </div>
     </div>
@@ -51,299 +54,308 @@ Details
 {% endblock %}
 
 {% block content %}
- <!-- Page Content -->
-     <!-- Banner Starts Here -->
-     <div class="heading-page header-text">
-       <section class="page-heading">
-         <div class="container">
-           <div class="row">
-             <div class="col-lg-12">
-               <div class="text-content">
-                 <h4>Post Details</h4>
-                 <h2>{{ blog.name }}</h2>
-               </div>
-             </div>
-           </div>
-         </div>
-       </section>
-     </div>
-     
-     <!-- Banner Ends Here -->
+<!-- Page Content -->
+<!-- Banner Starts Here -->
+<div class="heading-page header-text">
+  <section class="page-heading">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="text-content">
+            <h4>Post Details</h4>
+            <h2>{{ blog.name }}</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Banner Ends Here -->
 
 
-     <section class="blog-posts grid-system">
-       <div class="container">
-         <div class="row">
-           <div class="col-lg-8">
-             <div class="all-blog-posts">
-               <div class="row">
-                 <div class="col-lg-12">
-                   <div class="blog-post">
-                     <div class="blog-thumb">
-                       <img src="{{ blog.image.url }}" alt="{{ blog.name }}">
-                     </div>
-                     <div class="down-content">
-                       {% for category in blog.category.all %}
-                       <span>{{ category.name }}/</span>
-                       {% endfor %}
-                       <a href="post-details.html"><h4>{{ blog.name }}</h4></a>
-                       <ul class="post-info">
-                         <li><a href="#">{{ blog.user.username }}</a></li>
-                         <li><a href="#">{{ blog.pub_date }}</a></li>
-                         <li><a href="#">10 Comments</a></li>
-                       </ul>
-                       <p>{{ blog.content | safe}} <a
-                          rel="nofollow" href="https://templatemo.com/tag/multi-page" target="_parent"></a> <a rel="nofollow" href="https://templatemo.com/tag/resume" target="_parent"></a>
-                         <br><br></p>
-                       <div class="post-options">
-                         <div class="row">
-                           <div class="col-6">
-                             <ul class="post-tags">
-                               {% for tag in blog.tag_cloud.all %}
-                               <li><i class="fa fa-tags"></i></li>
-                               <li><a href="#">{{ tag.name }}</a>,</li>
-                               {% endfor %}
-                             </ul>
-                           </div>
-                           <div class="col-6">
-                             <ul class="post-share">
-                               <li><i class="fa fa-share-alt"></i></li>
-                               <li><a href="#">Facebook</a>,</li>
-                               <li><a href="#"> Twitter</a></li>
-                             </ul>
-                           </div>
-                         </div>
-                       </div>
-                     </div>
-                   </div>
-                 </div>
-                 <div class="col-lg-12">
-                   <div class="down-contact">
-                     <div class="row">
-                       
-                 
-                       <div class="col-lg-12">
-                         <div class="sidebar-item submit-comment">
-                           <div class="sidebar-heading">
-                             <h2>Your comment</h2>
-                           </div>
-                           <div class="content">
-                             <form id="comment" action="#" method="POST">
-                               {% csrf_token %} 
-                               <input type="hidden" name="choice" value="comment" >
-                               <input type="hidden" name="blog_id" value="{{ blog.id }}">
-                               <div class="row">
-                                {% if request.user.is_authenticated %} 
-                                <div class="col-lg-12">
-                                  <fieldset>
-                                    <textarea name="comment" rows="6" id="message" placeholder=" your comment" required=""></textarea>
-                                  </fieldset>
-                                </div>
-                                <div class="col-lg-12">
-                                  <fieldset>
-                                    <button type="submit" id="form-submit" class="main-button">Submit</button>
-                                  </fieldset>
-                                </div>
-                                {% else %}
-                                 <div class="col-md-6 col-sm-12">
-                                   <fieldset>
-                                     <input name="name" type="text" id="name" placeholder="Your name" required="">
-                                   </fieldset>
-                                 </div>
-                                 <div class="col-md-6 col-sm-12">
-                                   <fieldset>
-                                     <input name="surname" type="text" id="email" placeholder="Your surname" required="">
-                                   </fieldset>
-                                 </div>
-                                 <div class="col-md-12 col-sm-12">
-                                   <fieldset>
-                                     <input name="email" type="text" id="subject" placeholder="Your email">
-                                   </fieldset>
-                                 </div>
-                                 <div class="col-lg-12">
-                                  <fieldset>
-                                    <textarea name="comment" rows="6" id="message" placeholder=" your comment" required=""></textarea>
-                                  </fieldset>
-                                </div>
-                                <div class="col-lg-12">
-                                  <fieldset>
-                                    <button type="submit" id="form-submit" class="main-button">Send</button>
-                                  </fieldset>
-                                </div>
-                              {% endif %}
-                               </div>
-                             </form>
-                           </div>
-                         </div>
-                       </div>
-                       {% for comment in blog_comments %}
-                       <div class="card mt-5" style="width:100%;">
-                         <div class="card-header bg-warning">
-                           {% if comment.user %}
-                           <p style="float:left" class="text-light">{{ comment.user.username }} </p>
-                           <p style="float:right" class="text-light">{{ comment.pub_date }}</p>
-                           {% else %}
-                           <p style="float:left" class="text-light">{{ comment.name }} {{ comment.surname }} </p>
-                           <p style="float:right" class="text-light">{{ comment.pub_date }}</p>
-                           {% endif %} 
-                           {% if request.user == comment.user %} 
-                           <a href = "{% url 'delete_comment' comment.id %}" style = "float:right;">Delete</a>
-                           {% endif %}
-                         </div>
-                         <div class="card-body">
-                           <blockquote class="blockquote mb-0">
-                             <p>{{ comment.comment }}</p>
-                           </blockquote>
-                         </div>
-                         {% for reply in comment.replies.all %}
-                           <div class="card my-3 mx-5" style="width:90%;">
-                             <div class="card-header bg-warning">
-                              {% if reply.user %} 
-                               <p style="float:left;" class="text-light">{{ reply.user.username }}</p> 
-                               <p style="float:right;" class="text-light">{{ reply.pub_date }}</p>
-                              {% else %}
-                               <p style="float:left;" class="text-light">{{ reply.name}} {{ reply.surname }}</p> 
-                               <p style="float:right;" class="text-light">{{ reply.pub_date }}</p>
-                              {% endif %}
-                               {% if request.user == reply.user %}
-                               <a href = "{% url 'delete_comment' reply.id %}" style = "float:right;">Delete</a>
-                               {% endif %} 
-                             </div>
-                             <div class="card-body">
-                               <blockquote class="blockquote mb-0">
-                                 <p>{{ reply.comment }}</p>
-                               </blockquote>
-                             </div>
-                           </div>
-                         {% endfor %}
-                       </div>
-                       <div class="col-lg-12">
-                         <div class="sidebar-item submit-comment">
-                           <div class="sidebar-heading">
-                             <h2>Your reply</h2>
-                           </div>
-                           <div class="content">
-                             <form id="comment" action="#" method="POST">
-                               {% csrf_token %} 
-                               <input type="hidden" name="choice" value="reply" >
-                               <input type="hidden" name="blog_id" value="{{ blog.id }}">
-                               <input type="hidden" name="comment_id" value="{{ comment.id }}">
-                               <div class="row">
-                                {% if request.user.is_authenticated %} 
-                                <div class="col-lg-12">
-                                  <fieldset>
-                                    <textarea name="reply" rows="6" id="message" placeholder="your reply" required=""></textarea>
-                                  </fieldset>
-                                </div> 
-                                <div class="col-lg-12">
-                                  <fieldset>
-                                    <button type="submit" id="form-submit" class="main-button">Send</button>
-                                  </fieldset>
-                                </div>
-                                {% else %}
-                                 <div class="col-md-6 col-sm-12">
-                                   <fieldset>
-                                     <input name="name" type="text" id="name" placeholder="Your name" required="">
-                                   </fieldset>
-                                 </div>
-                                 <div class="col-md-6 col-sm-12">
-                                   <fieldset>
-                                     <input name="surname" type="text" id="email" placeholder="Your surname" required="">
-                                   </fieldset>
-                                 </div>
-                                 <div class="col-md-12 col-sm-12">
-                                  <fieldset>
-                                    <input name="email" type="text" id="subject" placeholder="Your email">
-                                  </fieldset>
-                                </div>
-                                 <div class="col-lg-12">
-                                  <fieldset>
-                                    <textarea name="reply" rows="6" id="message" placeholder="your reply" required=""></textarea>
-                                  </fieldset>
-                                </div> 
-                                <div class="col-lg-12">
-                                  <fieldset>
-                                    <button type="submit" id="form-submit" class="main-button">Send</button>
-                                  </fieldset>
-                                </div>
-                              {% endif %}
-                               </div>
-                             </form>
-                           </div>
-                         </div>
-                       </div>
-                       {% endfor %}
-                     </div>
-                   </div>
-                 </div>
-               </div>
-             </div>
-           </div>
-           <div class="col-lg-4">
-             <div class="sidebar">
-               <div class="row">
-                 <div class="col-lg-12">
-                   <div class="sidebar-item search">
-                     <form id="search_form" name="gs" method="GET" action="#">
-                       <input type="text" name="q" class="searchText" placeholder="type to search..." autocomplete="on">
-                     </form>
-                   </div>
-                 </div>
-                 <div class="col-lg-12">
-                   <div class="sidebar-item recent-posts">
-                     <div class="sidebar-heading">
-                       <h2>Recent Posts</h2>
-                     </div>
-                     <div class="content">
-                      {% for blog in blogs %}
-                       <ul>
-                         <li><a href="{% url 'post-details' blog.id %}">
-                           <h5>{{ blog.name }}</h5>
-                           <span>{{ blog.pub_date }}</span>
-                         </a></li>
-                       </ul>
-                       {% endfor %}
-                     </div>
-                   </div>
-                 </div>
-                 <div class="col-lg-12">
-                   <div class="sidebar-item categories">
-                     <div class="sidebar-heading">
-                       <h2>Categories</h2>
-                     </div>
-                     <div class="content">
-                       {% for category in categories %}
-                       <ul>
-                         <li><a href="{% url 'categorylink'  category.id %}">- {{ category.name }}</a></li>
-                       </ul>
-                       {% endfor %}
-                     </div>
-                   </div>
-                 </div>
-                 <div class="col-lg-12">
-                   <div class="sidebar-item tags">
-                     <div class="sidebar-heading">
-                       <h2>Tag Clouds</h2>
-                     </div>
-                     <div class="content">
-                       {% for tag in tagclouds %}
-                       <ul>
-                         <li><a href="{% url 'tagcloud' tag.id %}">{{ tag.name }}</a></li>
-                       </ul>
-                       {% endfor %}
-                     </div>
-                   </div>
-                 </div>
-               </div>
-             </div>
-           </div>
-         </div>
-       </div>
-     </section>
+<section class="blog-posts grid-system">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="all-blog-posts">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="blog-post">
+                <div class="blog-thumb">
+                  <img src="{{ blog.image.url }}" alt="{{ blog.name }}">
+                </div>
+                <div class="down-content">
+                  {% for category in blog.category.all %}
+                  <span>{{ category.name }}/</span>
+                  {% endfor %}
+                  <a href="post-details.html">
+                    <h4>{{ blog.name }}</h4>
+                  </a>
+                  <ul class="post-info">
+                    <li><i style="color: grey;">{{ blog.user.username }}</i></li>
+                    <li><i style="color: grey;">{{ blog.pub_date }}</i></li>
+                    <li><i style="color: grey;">Comments {{ blog.comment_count }}</i></li>
+                  </ul>
+                  <p>{{ blog.content | safe}} <a rel="nofollow" href="https://templatemo.com/tag/multi-page"
+                      target="_parent"></a> <a rel="nofollow" href="https://templatemo.com/tag/resume"
+                      target="_parent"></a>
+                    <br><br>
+                  </p>
+                  <div class="post-options">
+                    <div class="row">
+                      <div class="col-6">
+                        <ul class="post-tags">
+                          {% for tag in blog.tag_cloud.all %}
+                          <li><i class="fa fa-tags"></i></li>
+                          <li><a href="#">{{ tag.name }}</a>,</li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                      <div class="col-6">
+                        <ul class="post-share">
+                          <li><i class="fa fa-share-alt"></i></li>
+                          <li><a href="#">Facebook</a>,</li>
+                          <li><a href="#"> Twitter</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="down-contact">
+                <div class="row">
+
+
+                  <div class="col-lg-12">
+                    <div class="sidebar-item submit-comment">
+                      <div class="sidebar-heading">
+                        <h2>Your comment</h2>
+                      </div>
+                      <div class="content">
+                        <form id="comment" action="#" method="POST">
+                          {% csrf_token %}
+                          <input type="hidden" name="choice" value="comment">
+                          <input type="hidden" name="blog_id" value="{{ blog.id }}">
+                          <div class="row">
+                            {% if request.user.is_authenticated %}
+                            <div class="col-lg-12">
+                              <fieldset>
+                                <textarea name="comment" rows="6" id="message" placeholder=" your comment"
+                                  required=""></textarea>
+                              </fieldset>
+                            </div>
+                            <div class="col-lg-12">
+                              <fieldset>
+                                <button type="submit" id="form-submit" class="main-button">Submit</button>
+                              </fieldset>
+                            </div>
+                            {% else %}
+                            <div class="col-md-6 col-sm-12">
+                              <fieldset>
+                                <input name="name" type="text" id="name" placeholder="Your name" required="">
+                              </fieldset>
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                              <fieldset>
+                                <input name="surname" type="text" id="email" placeholder="Your surname" required="">
+                              </fieldset>
+                            </div>
+                            <div class="col-md-12 col-sm-12">
+                              <fieldset>
+                                <input name="email" type="text" id="subject" placeholder="Your email">
+                              </fieldset>
+                            </div>
+                            <div class="col-lg-12">
+                              <fieldset>
+                                <textarea name="comment" rows="6" id="message" placeholder=" your comment"
+                                  required=""></textarea>
+                              </fieldset>
+                            </div>
+                            <div class="col-lg-12">
+                              <fieldset>
+                                <button type="submit" id="form-submit" class="main-button">Send</button>
+                              </fieldset>
+                            </div>
+                            {% endif %}
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  {% for comment in blog_comments %}
+                  <div class="card mt-5" style="width:100%;">
+                    <div class="card-header bg-warning">
+                      {% if comment.user %}
+                      <p style="float:left" class="text-light">{{ comment.user.username }} </p>
+                      <p style="float:right" class="text-light">{{ comment.pub_date }}</p>
+                      {% else %}
+                      <p style="float:left" class="text-light">{{ comment.name }} {{ comment.surname }} </p>
+                      <p style="float:right" class="text-light">{{ comment.pub_date }}</p>
+                      {% endif %}
+                      {% if request.user == comment.user %}
+                      <a href="{% url 'delete_comment' comment.id %}" style="float:right;">Delete</a>
+                      {% endif %}
+                    </div>
+                    <div class="card-body">
+                      <blockquote class="blockquote mb-0">
+                        <p>{{ comment.comment }}</p>
+                      </blockquote>
+                    </div>
+                    {% for reply in comment.replies.all %}
+                    <div class="card my-3 mx-5" style="width:90%;">
+                      <div class="card-header bg-warning">
+                        {% if reply.user %}
+                        <p style="float:left;" class="text-light">{{ reply.user.username }}</p>
+                        <p style="float:right;" class="text-light">{{ reply.pub_date }}</p>
+                        {% else %}
+                        <p style="float:left;" class="text-light">{{ reply.name}} {{ reply.surname }}</p>
+                        <p style="float:right;" class="text-light">{{ reply.pub_date }}</p>
+                        {% endif %}
+                        {% if request.user == reply.user %}
+                        <a href="{% url 'delete_comment' reply.id %}" style="float:right;">Delete</a>
+                        {% endif %}
+                      </div>
+                      <div class="card-body">
+                        <blockquote class="blockquote mb-0">
+                          <p>{{ reply.comment }}</p>
+                        </blockquote>
+                      </div>
+                    </div>
+                    {% endfor %}
+                  </div>
+                  <div class="col-lg-12">
+                    <div class="sidebar-item submit-comment">
+                      <div class="sidebar-heading">
+                        <h2>Your reply</h2>
+                      </div>
+                      <div class="content">
+                        <form id="comment" action="#" method="POST">
+                          {% csrf_token %}
+                          <input type="hidden" name="choice" value="reply">
+                          <input type="hidden" name="blog_id" value="{{ blog.id }}">
+                          <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                          <div class="row">
+                            {% if request.user.is_authenticated %}
+                            <div class="col-lg-12">
+                              <fieldset>
+                                <textarea name="reply" rows="6" id="message" placeholder="your reply"
+                                  required=""></textarea>
+                              </fieldset>
+                            </div>
+                            <div class="col-lg-12">
+                              <fieldset>
+                                <button type="submit" id="form-submit" class="main-button">Send</button>
+                              </fieldset>
+                            </div>
+                            {% else %}
+                            <div class="col-md-6 col-sm-12">
+                              <fieldset>
+                                <input name="name" type="text" id="name" placeholder="Your name" required="">
+                              </fieldset>
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                              <fieldset>
+                                <input name="surname" type="text" id="email" placeholder="Your surname" required="">
+                              </fieldset>
+                            </div>
+                            <div class="col-md-12 col-sm-12">
+                              <fieldset>
+                                <input name="email" type="text" id="subject" placeholder="Your email">
+                              </fieldset>
+                            </div>
+                            <div class="col-lg-12">
+                              <fieldset>
+                                <textarea name="reply" rows="6" id="message" placeholder="your reply"
+                                  required=""></textarea>
+                              </fieldset>
+                            </div>
+                            <div class="col-lg-12">
+                              <fieldset>
+                                <button type="submit" id="form-submit" class="main-button">Send</button>
+                              </fieldset>
+                            </div>
+                            {% endif %}
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="sidebar">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="sidebar-item search">
+                <form class="d-flex" style="gap: 5px;" role="search" action="{% url 'search_view' %}" method="get">
+                  <input class="form-control me-2" name = "search" type="search" placeholder="Search" aria-label="Search">
+                  <button class="btn btn-outline-Light" style="background-color: orange; color: white; border: none; border-radius: 8px;" type="submit">Search</button>
+                </form>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="sidebar-item recent-posts">
+                <div class="sidebar-heading">
+                  <h2>Recent Posts</h2>
+                </div>
+                <div class="content">
+                  {% for blog in blogs %}
+                  <ul>
+                    <li><a href="{% url 'post-details' blog.id %}">
+                        <h5>{{ blog.name }}</h5>
+                        <span>{{ blog.pub_date }}</span>
+                      </a></li>
+                  </ul>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="sidebar-item categories">
+                <div class="sidebar-heading">
+                  <h2>Categories</h2>
+                </div>
+                <div class="content">
+                  {% for category in categories %}
+                  <ul>
+                    <li><a href="{% url 'categorylink'  category.id %}">- {{ category.name }}</a></li>
+                  </ul>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="sidebar-item tags">
+                <div class="sidebar-heading">
+                  <h2>Tag Clouds</h2>
+                </div>
+                <div class="content">
+                  {% for tag in tagclouds %}
+                  <ul>
+                    <li><a href="{% url 'tagcloud' tag.id %}">{{ tag.name }}</a></li>
+                  </ul>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 {% endblock %}
 
-{% block footer %} 
+{% block footer %}
 <footer>
   <div class="container">
     <div class="row">
@@ -359,8 +371,8 @@ Details
       <div class="col-lg-12">
         <div class="copyright-text">
           <p>Copyright 2023 My Blog Co.
-                
-             | Design: Template<a rel="nofollow" href="" target="_parent"></a></p>
+
+            | Design: Template<a rel="nofollow" href="" target="_parent"></a></p>
         </div>
       </div>
     </div>

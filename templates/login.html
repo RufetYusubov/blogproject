@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 
 {% block title %} Log in {% endblock %}
-{% block css %}
+
 {% load static %}
+{% block css %}
 <link rel="icon" type="image/png" href="{% static 'images/icons/favicon.ico' %}" />
 <!--===============================================================================================-->
 <link rel="stylesheet" type="text/css" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
@@ -25,13 +26,60 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 <!--===============================================================================================-->
 {% endblock %}
+
+{% block header %}
+<header class="">
+	<nav class="navbar navbar-expand-lg">
+		<div class="container">
+			<a class="navbar-brand" href="{% url 'index' %}">
+				<h2>Blog<em>.</em></h2>
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+				aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarResponsive">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'index' %}">Home
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'about' %}">About Us</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'blog' %}">Blog Entries</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
+					</li>
+					{% if not request.user.is_authenticated %}
+					<li class="nav-item">
+						<a class="nav-link active" href="{% url 'login' %}">Login</a>
+						<span class="sr-only">(current)</span>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
+					</li>
+					{% else %}
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'logout' %}">Logout</a>
+					</li>
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+	</nav>
+</header>
+{% endblock %}
+
 {% block content %}
 
 <body>
 
-	<div class="limiter">
+	<div class="limiter" >
 		<div class="container-login100" style="background-image: url('/static/images/bg-01.jpg');">
-			<div class="wrap-login100">
+			<div class="wrap-login100" style="margin-top: 100px;">
 				<form class="login100-form validate-form" method="POST">
 					{% csrf_token %}
 					<span class="login100-form-logo">

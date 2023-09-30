@@ -5,12 +5,10 @@ from django.views.generic import View
 
 class HomeView(View):
     def get(self,request,*args,**kwargs):
-        if not request.user.is_authenticated:
-            return redirect("login")
-
         blogs = BlogModel.objects.order_by("-id")[:3]
         categories = CategoryModel.objects.all()
         tagclouds = TagCloudModel.objects.all()
+
 
         context = {
             'blogs' : blogs,
@@ -20,6 +18,23 @@ class HomeView(View):
 
 
         return render(request,"index.html",context)
+    
+def search_view(request):
+    search = request.GET.get('search') 
+    results = BlogModel.objects.filter(name__contains=search) 
+    categories = CategoryModel.objects.all()
+    tagclouds = TagCloudModel.objects.all()
+    blogs = BlogModel.objects.all()
+    
+    context = {
+        'query': search,
+        'results': results,
+        'categories' : categories,
+        'tagclouds' : tagclouds,
+        'blogs' : blogs
+    }
+    
+    return render(request, 'search_results.html', context)
 
 #-----------------------------------------------------------------------------------------
 
@@ -107,7 +122,6 @@ class PostDetailView(View):
             if request.user.is_authenticated:
                 name = request.user.first_name
                 surname = request.user.last_name
-                email = request.user.email
             else:
                 name = request.POST.get("name")
                 surname = request.POST.get("surname")
@@ -123,9 +137,7 @@ class PostDetailView(View):
                     blog = blog,
                     comment = comment,
                     name = name,
-                    surname = surname,
-                    email = email
-                    
+                    surname = surname,             
                 )
             else:
                  CommentModel.objects.create(
@@ -144,7 +156,6 @@ class PostDetailView(View):
             if request.user.is_authenticated:
                     name = request.user.first_name
                     surname = request.user.last_name
-                    email = request.user.email
             else:
                 name = request.POST.get("name")
                 surname = request.POST.get("surname")
