@@ -564,54 +564,72 @@ ul.page-numbers li a:hover {
 	margin-bottom: 25px;
 }
 
-.blog-posts .comments {
-	margin-top: 30px;
-}
 
-.blog-posts .comments ul li {
+
+.blog-posts .content ul li {
 	display: inline-block;
 	margin-bottom: 20px;
 	padding-bottom: 20px;
-	border-bottom: 1px solid #eee;
-}
+	
+} 
 
-.blog-posts .comments ul li.replied {
+.blog-posts .content ul li.replied {
 	padding-left: 130px;
 }
 
-.blog-posts .comments ul li:last-child {
+.blog-posts .content .comment{
 	margin-bottom: 0px;
-	padding-bottom: 0px;
-	border-bottom: none;
+	padding-bottom: 10px;
+	border-bottom: 2px solid #bdb6b6; 	
 }
 
-.blog-posts .comments ul li .author-thumb {
+.blog-posts .content ul li .author-thumb {
 	display: inline;
 	float: left;
 }
 
-.blog-posts .comments ul li .author-thumb img {
+.blog-posts .content{
+	margin-top: 50px;
+}
+
+.blog-posts .content .reply-comment{
+	display: none;
+}
+
+
+.blog-posts .content ul li .author-thumb img {
 	max-width: 100px;
 	display: inline;
 }
 
-.blog-posts .comments ul li .right-content {
+.blog-posts .content ul li .right-content {
 	margin-left: 130px;
 }
 
-.blog-posts .comments ul li .right-content h4 {
+.blog-posts .content ul li .right-content h4 {
 	color: #20232e;
 	font-size: 19px;
 	font-weight: 900;
 	letter-spacing: 0.5px;
 }
 
-.blog-posts .comments ul li .right-content h4 span {
+.blog-posts .content ul li .right-content h4 span {
 	font-size: 14px;
     color: #aaa;
 	font-weight: 400;
 	letter-spacing: 0.25px;
 	margin-left: 20px;
+}
+
+.blog-posts .content ul li .right-content p {
+	font-size: 18px;
+	color: #7a7a7a;
+}
+
+.blog-posts .content ul li .right-content button{
+	color: #f48840;
+	background: none;
+	outline: none;
 }
 
 .blog-posts .submit-comment {

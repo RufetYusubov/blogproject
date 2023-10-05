@@ -2,7 +2,7 @@
 {% block title %}
 Details
 {% endblock %}
-
+{% load static %}
 {% block header %}
 
 <header class="">
@@ -127,7 +127,113 @@ Details
             <div class="col-lg-12">
               <div class="down-contact">
                 <div class="row">
-
+                  <div class="col-lg-12" id="comments">
+                    <div class="sidebar-item submit-comment">
+                      <div class="sidebar-heading">
+                        <h2>Comments</h2>
+                      </div>
+                      {% for comment in blog_comments %}
+                      <div class="content">
+                        <ul class="comment">
+                          <li>
+                            <div class="author-thumb">
+                              <img src="{% static 'images/download.png' %}" alt="">
+                            </div>
+                            <div class="right-content">
+                              {% if comment.user %}
+                                <h4>{{ comment.user.username}}
+                                  <span>{{ comment.pub_date }}</span>
+                                </h4>
+                              {% else %}
+                                <h4>{{ comment.name}}  {{ comment.surname }}
+                                  <span>{{ comment.pub_date }}</span>
+                                </h4>
+                              {% endif %}
+                              <p>{{ comment.comment  }}</p>
+                              <button class="toggle-reply">Show reply</button>
+                              <div class="col-lg-12 reply-comment">
+                                <div class="sidebar-item submit-comment">
+                                  <div class="sidebar-heading">
+                                    <h2>Your reply</h2>
+                                  </div>
+                                  <div class="content">
+                                    <form id="comment" action="#" method="POST">
+                                      {% csrf_token %}
+                                      <input type="hidden" name="choice" value="reply">
+                                      <input type="hidden" name="blog_id" value="{{ blog.id }}">
+                                      <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                                      <div class="row">
+                                        {% if request.user.is_authenticated %}
+                                        <div class="col-lg-12">
+                                          <fieldset>
+                                            <textarea name="reply" rows="6" id="message" placeholder="your reply"
+                                              required=""></textarea>
+                                          </fieldset>
+                                        </div>
+                                        <div class="col-lg-12">
+                                          <fieldset>
+                                            <button type="submit" id="form-submit" class="main-button">Send</button>
+                                          </fieldset>
+                                        </div>
+                                        {% else %}
+                                        <div class="col-md-6 col-sm-12">
+                                          <fieldset>
+                                            <input name="name" type="text" id="name" placeholder="Your name" required="">
+                                          </fieldset>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                          <fieldset>
+                                            <input name="surname" type="text" id="email" placeholder="Your surname" required="">
+                                          </fieldset>
+                                        </div>
+                                        <div class="col-md-12 col-sm-12">
+                                          <fieldset>
+                                            <input name="email" type="text" id="subject" placeholder="Your email">
+                                          </fieldset>
+                                        </div>
+                                        <div class="col-lg-12">
+                                          <fieldset>
+                                            <textarea name="reply" rows="6" id="message" placeholder="your reply"
+                                              required=""></textarea>
+                                          </fieldset>
+                                        </div>
+                                        <div class="col-lg-12">
+                                          <fieldset>
+                                            <button type="submit" id="form-submit" class="main-button">Send</button>
+                                          </fieldset>
+                                        </div>
+                                        {% endif %}
+                                      </div>
+                                    </form>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </li>
+                          {% for reply in comment.replies.all %}
+                          <li class="replied">
+                            <div class="author-thumb">
+                              <img src="{% static 'images/download.png' %}" alt="">
+                            </div>
+                            <div class="right-content">
+                              {% if reply.user %}             
+                                <h4>{{ reply.user.username }}
+                                  <span>{{ reply.pub_date }}</span>
+                                </h4>
+                              {% else %}
+                                <h4>{{ reply.name }} {{ reply.surname }}
+                                  <span>{{ reply.pub_date }}</span>
+                                </h4>
+                              {% endif %}
+                              <p>{{ reply.comment }}</p>
+                            </div>
+                          </li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
 
                   <div class="col-lg-12">
                     <div class="sidebar-item submit-comment">
@@ -185,105 +291,8 @@ Details
                       </div>
                     </div>
                   </div>
-                  {% for comment in blog_comments %}
-                  <div class="card mt-5" style="width:100%;">
-                    <div class="card-header bg-warning">
-                      {% if comment.user %}
-                      <p style="float:left" class="text-light">{{ comment.user.username }} </p>
-                      <p style="float:right" class="text-light">{{ comment.pub_date }}</p>
-                      {% else %}
-                      <p style="float:left" class="text-light">{{ comment.name }} {{ comment.surname }} </p>
-                      <p style="float:right" class="text-light">{{ comment.pub_date }}</p>
-                      {% endif %}
-                      {% if request.user == comment.user %}
-                      <a href="{% url 'delete_comment' comment.id %}" style="float:right;">Delete</a>
-                      {% endif %}
-                    </div>
-                    <div class="card-body">
-                      <blockquote class="blockquote mb-0">
-                        <p>{{ comment.comment }}</p>
-                      </blockquote>
-                    </div>
-                    {% for reply in comment.replies.all %}
-                    <div class="card my-3 mx-5" style="width:90%;">
-                      <div class="card-header bg-warning">
-                        {% if reply.user %}
-                        <p style="float:left;" class="text-light">{{ reply.user.username }}</p>
-                        <p style="float:right;" class="text-light">{{ reply.pub_date }}</p>
-                        {% else %}
-                        <p style="float:left;" class="text-light">{{ reply.name}} {{ reply.surname }}</p>
-                        <p style="float:right;" class="text-light">{{ reply.pub_date }}</p>
-                        {% endif %}
-                        {% if request.user == reply.user %}
-                        <a href="{% url 'delete_comment' reply.id %}" style="float:right;">Delete</a>
-                        {% endif %}
-                      </div>
-                      <div class="card-body">
-                        <blockquote class="blockquote mb-0">
-                          <p>{{ reply.comment }}</p>
-                        </blockquote>
-                      </div>
-                    </div>
-                    {% endfor %}
-                  </div>
-                  <div class="col-lg-12">
-                    <div class="sidebar-item submit-comment">
-                      <div class="sidebar-heading">
-                        <h2>Your reply</h2>
-                      </div>
-                      <div class="content">
-                        <form id="comment" action="#" method="POST">
-                          {% csrf_token %}
-                          <input type="hidden" name="choice" value="reply">
-                          <input type="hidden" name="blog_id" value="{{ blog.id }}">
-                          <input type="hidden" name="comment_id" value="{{ comment.id }}">
-                          <div class="row">
-                            {% if request.user.is_authenticated %}
-                            <div class="col-lg-12">
-                              <fieldset>
-                                <textarea name="reply" rows="6" id="message" placeholder="your reply"
-                                  required=""></textarea>
-                              </fieldset>
-                            </div>
-                            <div class="col-lg-12">
-                              <fieldset>
-                                <button type="submit" id="form-submit" class="main-button">Send</button>
-                              </fieldset>
-                            </div>
-                            {% else %}
-                            <div class="col-md-6 col-sm-12">
-                              <fieldset>
-                                <input name="name" type="text" id="name" placeholder="Your name" required="">
-                              </fieldset>
-                            </div>
-                            <div class="col-md-6 col-sm-12">
-                              <fieldset>
-                                <input name="surname" type="text" id="email" placeholder="Your surname" required="">
-                              </fieldset>
-                            </div>
-                            <div class="col-md-12 col-sm-12">
-                              <fieldset>
-                                <input name="email" type="text" id="subject" placeholder="Your email">
-                              </fieldset>
-                            </div>
-                            <div class="col-lg-12">
-                              <fieldset>
-                                <textarea name="reply" rows="6" id="message" placeholder="your reply"
-                                  required=""></textarea>
-                              </fieldset>
-                            </div>
-                            <div class="col-lg-12">
-                              <fieldset>
-                                <button type="submit" id="form-submit" class="main-button">Send</button>
-                              </fieldset>
-                            </div>
-                            {% endif %}
-                          </div>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-                  {% endfor %}
+                 
+                 
                 </div>
               </div>
             </div>
@@ -296,8 +305,11 @@ Details
             <div class="col-lg-12">
               <div class="sidebar-item search">
                 <form class="d-flex" style="gap: 5px;" role="search" action="{% url 'search_view' %}" method="get">
-                  <input class="form-control me-2" name = "search" type="search" placeholder="Search" aria-label="Search">
-                  <button class="btn btn-outline-Light" style="background-color: orange; color: white; border: none; border-radius: 8px;" type="submit">Search</button>
+                  <input class="form-control me-2" name="search" type="search" placeholder="Subject ?"
+                    aria-label="Search">
+                  <button class="btn btn-outline-Light"
+                    style="background-color: orange; color: white; border: none; border-radius: 8px;"
+                    type="submit">Search</button>
                 </form>
               </div>
             </div>
