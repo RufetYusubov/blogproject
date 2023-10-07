@@ -1,6 +1,5 @@
 from django.shortcuts import render,redirect
-from account.models import AccountModel,ContactModel
-from BlogApp.models import CategoryModel
+from account.models import ContactModel
 from django.contrib.auth.models import User
 from django.views.generic import View
 from django.contrib import messages
@@ -14,7 +13,7 @@ def checkpassword(newpassword1):
 
 
 def check_validation(newpassword1):
-    has_digit, has_alpha, has_upper_case = False, False,False
+    has_digit, has_lower_case, has_upper_case = False, False,False
 
     for i in newpassword1:
         if i.isdigit():
@@ -22,8 +21,8 @@ def check_validation(newpassword1):
         elif i.isalpha() and i.isupper():
             has_upper_case = True
         elif i.isalpha() and i.lower():
-            has_alpha = True
-    return has_digit and has_alpha and has_upper_case
+            has_lower_case = True
+    return has_digit and has_lower_case and has_upper_case
 
 class SignupView(View):
     def get(self,request,*args,**kwargs):
@@ -100,7 +99,7 @@ class ChangepasswordView(View):
         newpassword2 = request.POST.get("newpassword2")
         user = User.objects.get(username=username)
 
-        if newpassword1 == newpassword2 and checkpassword(newpassword1) and check_validation(newpassword1):
+        if newpassword1== newpassword2 and checkpassword(newpassword1) and check_validation(newpassword1):
             user.set_password(newpassword1)
             user.save()
             messages.success(request,"Password changed")
@@ -117,13 +116,9 @@ class ChangepasswordView(View):
 #-----------------------------------------------------------------------------------------------------
 class ContactView(View):
     def get(self,request,*args,**kwargs):
-        categories = CategoryModel.objects.all()
+    
 
-        context = {
-            "categories" : categories
-        }
-
-        return render(request,"contact.html",context)
+        return render(request,"contact.html")
     
     def post(self,request,*args,**kwargs):
         name = request.POST.get("name")

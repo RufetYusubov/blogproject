@@ -606,6 +606,12 @@ ul.page-numbers li a:hover {
 	margin-left: 130px;
 }
 
+.blog-posts .content ul li .right-content .delete {
+	color: #f48840;
+	margin-left: 20px;
+	font-weight: 300;
+}
+
 .blog-posts .content ul li .right-content h4 {
 	color: #20232e;
 	font-size: 19px;
@@ -627,8 +633,12 @@ ul.page-numbers li a:hover {
 }
 
 .blog-posts .content ul li .right-content button{
-	color: #f48840;
-	background: none;
+	color: white;
+	border-radius: 5px;
+	height: 30px;
+	margin-top: 10px;
+	display: flex;
+	align-items: center;
 	outline: none;
 }
 

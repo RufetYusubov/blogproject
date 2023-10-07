@@ -37,7 +37,6 @@ class BlogModel(models.Model):
         return self.name
     
     def comment_count(self):
-        # Bu metod, blog gönderisine aid yorum sayısını hesaplar ve döndürür
         return CommentModel.objects.filter(blog=self).count()
     
 class CommentModel(models.Model):
@@ -60,7 +59,7 @@ class CommentModel(models.Model):
         return str(self.name) + " " + str(self.surname) + " " + str(self.id)
     
 class AboutModel(models.Model):
-    name = models.TextField()
+    text = models.TextField()
 
 
     class Meta:
@@ -68,6 +67,6 @@ class AboutModel(models.Model):
 
     
     def __str__(self) -> str:
-        return self.name
+        return self.text
     
     

@@ -18,20 +18,21 @@ class HomeView(View):
 
 
         return render(request,"index.html",context)
-    
+
+#--------------------------------------------------------------------
+
 def search_view(request):
     search = request.GET.get('search') 
     results = BlogModel.objects.filter(name__contains=search) 
     categories = CategoryModel.objects.all()
     tagclouds = TagCloudModel.objects.all()
     blogs = BlogModel.objects.all()
-    
+
     context = {
-        'query': search,
         'results': results,
         'categories' : categories,
         'tagclouds' : tagclouds,
-        'blogs' : blogs
+        'blogs' : blogs,
     }
     
     return render(request, 'search_results.html', context)
@@ -63,14 +64,14 @@ class TagCloudView(View):
         tagclouds = TagCloudModel.objects.all()
 
         categories = CategoryModel.objects.all()
-        blog_tag= BlogModel.objects.filter(tag_cloud=tagcloud)
+        blog_tags= BlogModel.objects.filter(tag_cloud=tagcloud)
         blogs = BlogModel.objects.all()
 
         context = {
             'tagcloud' : tagcloud,
             'tagclouds' : tagclouds,
             'categories' : categories,
-            'blog_tag' :blog_tag,
+            'blog_tags' :blog_tags,
             'blogs' : blogs
         }
 
@@ -95,12 +96,13 @@ class PostDetailView(View):
         categories = CategoryModel.objects.all()
         tagclouds = TagCloudModel.objects.all()
         blogs = BlogModel.objects.all()
-
         blog = BlogModel.objects.get(id=id)
+
         blog_comments = CommentModel.objects.filter(
             blog = blog,
             parent = None
         )
+
         context = {
             "blog" : blog,
             "blogs" : blogs,
@@ -108,6 +110,7 @@ class PostDetailView(View):
             "tagclouds" : tagclouds,
             "blog_comments" : blog_comments
         }
+
         if request.user.is_authenticated:
             user_comments = CommentModel.objects.filter(
                 user = request.user
