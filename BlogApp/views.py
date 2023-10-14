@@ -148,8 +148,7 @@ class PostDetailView(View):
                     comment = comment,
                     name = name,
                     surname = surname,
-                    email = email
-                    
+                    email = email    
                 )
 
 
