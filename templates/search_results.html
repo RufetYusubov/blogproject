@@ -1,15 +1,18 @@
-{% extends 'base.html' %} 
-{% block title %} 
+{% extends 'base.html' %}
+{% block title %}
 Blog Entries
-{% endblock %} 
+{% endblock %}
 
 {% block header %}
 
 <header class="">
   <nav class="navbar navbar-expand-lg">
     <div class="container">
-      <a class="navbar-brand" href="{% url 'index' %}"><h2>Blog<em>.</em></h2></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <a class="navbar-brand" href="{% url 'index' %}">
+        <h2>Blog<em>.</em></h2>
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+        aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -17,7 +20,7 @@ Blog Entries
           <li class="nav-item ">
             <a class="nav-link" href="{% url 'index' %}">Home
             </a>
-          </li> 
+          </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'about' %}">About Us</a>
           </li>
@@ -28,18 +31,18 @@ Blog Entries
           <li class="nav-item">
             <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
           </li>
-        {% if not request.user.is_authenticated %}
+          {% if not request.user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'login' %}">Login</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
           </li>
-        {% else %} 
+          {% else %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'logout' %}">Logout</a>
           </li>
-        {% endif %}
+          {% endif %}
         </ul>
       </div>
     </div>
@@ -50,132 +53,136 @@ Blog Entries
 {% endblock %}
 
 {% block content %}
-    <!-- Page Content -->
-    <!-- Banner Starts Here -->
-    <div class="heading-page header-text">
-      <section class="page-heading">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="text-content">
-                <h4>Recent Posts</h4>
-                <h2>Your result...</h2>
-              </div>
-            </div>
+<!-- Page Content -->
+<!-- Banner Starts Here -->
+<div class="heading-page header-text">
+  <section class="page-heading">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="text-content">
+            <h4>Recent Posts</h4>
+            <h2>Your result...</h2>
           </div>
         </div>
-      </section>
+      </div>
     </div>
-    
-    <!-- Banner Ends Here -->
+  </section>
+</div>
 
-    <section class="blog-posts grid-system">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8">
-            <div class="all-blog-posts">
-              <div class="row">
-              {% for blog in results %}
-                <div class="col-lg-6">
-                  <div class="blog-post">
-                    <div class="blog-thumb">
-                      <img src="{{ blog.image.url }}" alt="">
-                    </div>
-                    <div class="down-content">
-                      {% for category in blog.category.all %}
-                      <span>{{ category.name }}</span>
-                      {% endfor %}
-                      <a href="{% url 'post-details' blog.id %}"><h4>{{ blog.name }}</h4></a>
-                      <ul class="post-info">
-                        <li><i style="color: grey;">{{ blog.user.username }}</i></li>
-                        <li><i style="color: grey;">{{ blog.pub_date }}</i></li>
-                        <li><i style="color: grey;">Comments {{ blog.comment_count }}</i></li>
-                      </ul>
-                      <p>{{ blog.content | truncatechars_html:200 | safe }} </p>
-                      <div class="post-options">
-                        <div class="row">
-                          <div class="col-lg-12">
-                            {% for tag in blog.tag_cloud.all %}
-                            <ul class="post-tags">
-                              <li><i class="fa fa-tags"></i></li>
-                              <li><a href="{% url 'tagcloud' tag.id %}">{{ tag.name }}</a></li>
-                            </ul>
-                            {% endfor %}
-                          </div>
-                        </div>
+<!-- Banner Ends Here -->
+
+<section class="blog-posts grid-system">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="all-blog-posts">
+          <div class="row">
+            {% for blog in results %}
+            <div class="col-lg-6">
+              <div class="blog-post">
+                <div class="blog-thumb">
+                  <img src="{{ blog.image.url }}" alt="">
+                </div>
+                <div class="down-content">
+                  {% for category in blog.category.all %}
+                  <span>{{ category.name }}</span>
+                  {% endfor %}
+                  <a href="{% url 'post-details' blog.id %}">
+                    <h4>{{ blog.name }}</h4>
+                  </a>
+                  <ul class="post-info">
+                    <li><i style="color: grey;">{{ blog.user.username }}</i></li>
+                    <li><i style="color: grey;">{{ blog.pub_date }}</i></li>
+                    <li><i style="color: grey;">Comments {{ blog.comment_count }}</i></li>
+                  </ul>
+                  <p>{{ blog.content | truncatechars_html:200 | safe }} </p>
+                  <div class="post-options">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        {% for tag in blog.tag_cloud.all %}
+                        <ul class="post-tags">
+                          <li><i class="fa fa-tags"></i></li>
+                          <li><a href="{% url 'tagcloud' tag.id %}">{{ tag.name }}</a></li>
+                        </ul>
+                        {% endfor %}
                       </div>
                     </div>
                   </div>
                 </div>
-              {% endfor %}
               </div>
             </div>
+            {% endfor %}
           </div>
-          <div class="col-lg-4">
-            <div class="sidebar">
-              <div class="row">
-                <div class="col-lg-12">
-                  <div class="sidebar-item search">
-                    <form class="d-flex" style="gap: 5px;" role="search" action="{% url 'search_view' %}" method="get">
-                      <input class="form-control me-2" name = "search" type="search" placeholder="Search" aria-label="Search">
-                      <button class="btn btn-outline-Light" style="background-color: orange; color: white; border: none; border-radius: 8px;" type="submit">Search</button>
-                    </form>
-                  </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="sidebar">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="sidebar-item search">
+                <form class="d-flex" style="gap: 5px;" role="search" action="{% url 'search_view' %}" method="get">
+                  <input class="form-control me-2" name="search" type="search" placeholder="Search" aria-label="Search">
+                  <button class="btn btn-outline-Light"
+                    style="background-color: orange; color: white; border: none; border-radius: 8px;"
+                    type="submit">Search</button>
+                </form>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="sidebar-item recent-posts">
+                <div class="sidebar-heading">
+                  <h2>Recent Posts</h2>
                 </div>
-                <div class="col-lg-12">
-                  <div class="sidebar-item recent-posts">
-                    <div class="sidebar-heading">
-                      <h2>Recent Posts</h2>
-                    </div>
-                    <div class="content">
-                      {% for blog in blogs %}
-                      <ul>
-                        <li><a href="{% url 'post-details' blog.id %}">
-                          <h5>{{ blog.name }}</h5>
-                          <span>{{ blog.pub_date }}</span>
-                        </a></li>
-                      </ul>
-                      {% endfor %}
-                    </div>
-                  </div>
+                <div class="content">
+                  {% for blog in blogs %}
+                  <ul>
+                    <li><a href="{% url 'post-details' blog.id %}">
+                        <h5>{{ blog.name }}</h5>
+                        <span>{{ blog.pub_date }}</span>
+                      </a></li>
+                  </ul>
+                  {% endfor %}
                 </div>
-                <div class="col-lg-12">
-                  <div class="sidebar-item categories">
-                    <div class="sidebar-heading">
-                      <h2>Categories</h2>
-                    </div>
-                    <div class="content">
-                      {% for category in categories %}
-                      <ul>
-                        <li><a href="{% url 'categorylink' category.id %}">- {{ category.name }}</a></li>
-                      </ul>
-                      {% endfor %}
-                    </div>
-                  </div>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="sidebar-item categories">
+                <div class="sidebar-heading">
+                  <h2>Categories</h2>
                 </div>
-                <div class="col-lg-12">
-                  <div class="sidebar-item tags">
-                    <div class="sidebar-heading">
-                      <h2>Tag Clouds</h2>
-                    </div>
-                    <div class="content">
-                      {% for tag in tagclouds %}
-                      <ul>
-                        <li><a href="{% url 'tagcloud' tag.id %}">{{ tag.name }}</a></li>
-                      </ul>
-                      {% endfor %}
-                    </div>
-                  </div>
+                <div class="content">
+                  {% for category in categories %}
+                  <ul>
+                    <li><a href="{% url 'categorylink' category.id %}">- {{ category.name }}</a></li>
+                  </ul>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="sidebar-item tags">
+                <div class="sidebar-heading">
+                  <h2>Tag Clouds</h2>
+                </div>
+                <div class="content">
+                  {% for tag in tagclouds %}
+                  <ul>
+                    <li><a href="{% url 'tagcloud' tag.id %}">{{ tag.name }}</a></li>
+                  </ul>
+                  {% endfor %}
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
 {% endblock %}
 
-{% block footer %} 
+{% block footer %}
 <footer>
   <div class="container">
     <div class="row">
@@ -191,8 +198,8 @@ Blog Entries
       <div class="col-lg-12">
         <div class="copyright-text">
           <p>Copyright 2023 My Blog Co.
-                
-             | Design: Template<a rel="nofollow" href="" target="_parent"></a></p>
+
+            | Design: Template<a rel="nofollow" href="" target="_parent"></a></p>
         </div>
       </div>
     </div>

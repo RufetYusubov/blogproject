@@ -224,6 +224,9 @@ header .navbar {
 }
 .navbar .navbar-nav .nav-item {
 	margin: 0px 15px;
+	display: flex;
+	align-items: center;
+	gap: 15px;
 }
 .navbar .navbar-nav a.nav-link {
 	text-transform: capitalize;
